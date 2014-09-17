@@ -157,28 +157,32 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Areas\Accounts\Controllers\AccountController.cs" />
+    <Compile Include="Areas\Accounts\Controllers\ManageController.cs" />
+    <Compile Include="Areas\Accounts\Models\AccountViewModels.cs" />
+    <Compile Include="Areas\Accounts\Models\ApplicationDbContext.cs" />
+    <Compile Include="Areas\Accounts\Models\ApplicationUser.cs" />
+    <Compile Include="Areas\Accounts\Models\ManageViewModels.cs" />
+    <Compile Include="Areas\Accounts\Services\ApplicationSignInManager.cs" />
+    <Compile Include="Areas\Accounts\Services\ApplicationUserManager.cs" />
+    <Compile Include="Areas\Accounts\Services\EmailService.cs" />
+    <Compile Include="Areas\Accounts\Services\SmsService.cs" />
+    <Compile Include="Areas\Accounts\Startup.ConfigureAccounts.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -192,55 +196,60 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Scripts\_references.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Accounts\Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Areas\Accounts\Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Areas\Accounts\Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Areas\Accounts\Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Areas\Accounts\Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Areas\Accounts\Views\Account\Login.cshtml" />
+    <Content Include="Areas\Accounts\Views\Account\Register.cshtml" />
+    <Content Include="Areas\Accounts\Views\Account\ResetPassword.cshtml" />
+    <Content Include="Areas\Accounts\Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Areas\Accounts\Views\Account\SendCode.cshtml" />
+    <Content Include="Areas\Accounts\Views\Account\VerifyCode.cshtml" />
+    <Content Include="Areas\Accounts\Views\Account\_ChangePasswordPartial.cshtml" />
+    <Content Include="Areas\Accounts\Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Areas\Accounts\Views\Account\_RemoveAccountPartial.cshtml" />
+    <Content Include="Areas\Accounts\Views\Account\_SetPasswordPartial.cshtml" />
+    <Content Include="Areas\Accounts\Views\Manage\AddPhoneNumber.cshtml" />
+    <Content Include="Areas\Accounts\Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Areas\Accounts\Views\Manage\Index.cshtml" />
+    <Content Include="Areas\Accounts\Views\Manage\ManageLogins.cshtml" />
+    <Content Include="Areas\Accounts\Views\Manage\SetPassword.cshtml" />
+    <Content Include="Areas\Accounts\Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Areas\Accounts\Views\Shared\Lockout.cshtml" />
+    <Content Include="Areas\Accounts\Views\web.config" />
+    <Content Include="Areas\Accounts\Views\_ViewStart.cshtml" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="packages.config" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
-    <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Account\_RemoveAccountPartial.cshtml" />
-    <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
-    <Content Include="Views\Account\ConfirmEmail.cshtml" />
-    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
-    <Content Include="Views\Account\ForgotPassword.cshtml" />
-    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\SendCode.cshtml" />
-    <Content Include="Views\Account\VerifyCode.cshtml" />
-    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Views\Manage\ChangePassword.cshtml" />
-    <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\ManageLogins.cshtml" />
-    <Content Include="Views\Manage\SetPassword.cshtml" />
-    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
-    <Content Include="Views\Shared\Lockout.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Web.config" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="packages.config" />
-    <None Include="Project_Readme.html" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

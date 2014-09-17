@@ -8,7 +8,7 @@ namespace Xo
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
+            ConfigureAccounts(app);
         }
     }
 }
