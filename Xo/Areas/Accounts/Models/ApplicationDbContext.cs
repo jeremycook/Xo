@@ -1,21 +1,29 @@
 ﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Xo.Areas.Accounts.Models
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : DbContext
     {
+        static ApplicationDbContext()
+        {
+            Database.SetInitializer<ApplicationDbContext>(
+                new DropCreateDatabaseIfModelChanges<ApplicationDbContext>());
+        }
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
         }
 
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("DefaultConnection")
         {
         }
+
+        public virtual IDbSet<ApplicationUser> Users { get; set; }
+        public virtual IDbSet<IdentityUserLogin> Logins { get; set; }
     }
 }

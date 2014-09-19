@@ -120,9 +120,6 @@
     <Reference Include="Microsoft.AspNet.Identity.Owin">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.1.0\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.1.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
@@ -160,14 +157,18 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Accounts\Controllers\AccountController.cs" />
     <Compile Include="Areas\Accounts\Controllers\ManageController.cs" />
+    <Compile Include="Areas\Accounts\Helpers\IdentityExtensions.cs" />
     <Compile Include="Areas\Accounts\Models\AccountViewModels.cs" />
     <Compile Include="Areas\Accounts\Models\ApplicationDbContext.cs" />
     <Compile Include="Areas\Accounts\Models\ApplicationUser.cs" />
+    <Compile Include="Areas\Accounts\Models\IdentityUser.cs" />
     <Compile Include="Areas\Accounts\Models\ManageViewModels.cs" />
+    <Compile Include="Areas\Accounts\Models\IdentityUserLogin.cs" />
     <Compile Include="Areas\Accounts\Services\ApplicationSignInManager.cs" />
     <Compile Include="Areas\Accounts\Services\ApplicationUserManager.cs" />
     <Compile Include="Areas\Accounts\Services\EmailService.cs" />
     <Compile Include="Areas\Accounts\Services\SmsService.cs" />
+    <Compile Include="Areas\Accounts\Services\UserStore.cs" />
     <Compile Include="Areas\Accounts\Startup.ConfigureAccounts.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
