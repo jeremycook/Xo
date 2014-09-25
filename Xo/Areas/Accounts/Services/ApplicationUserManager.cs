@@ -12,7 +12,10 @@ namespace Xo.Areas.Accounts.Services
     // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
     public class ApplicationUserManager : UserManager<ApplicationUser, Guid>
     {
-        public ApplicationUserManager(IUserStore<ApplicationUser, Guid> store)
+        /// <remarks>
+        /// Private because I don't want to accidentally use this instead of the Create method.
+        /// </remarks>
+        private ApplicationUserManager(IUserStore<ApplicationUser, Guid> store)
             : base(store)
         {
         }
@@ -20,6 +23,7 @@ namespace Xo.Areas.Accounts.Services
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
             var manager = new ApplicationUserManager(new UserStore(context.Get<ApplicationDbContext>()));
+
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<ApplicationUser, Guid>(manager)
             {

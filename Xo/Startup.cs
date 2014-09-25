@@ -8,6 +8,9 @@ namespace Xo
     {
         public void Configuration(IAppBuilder app)
         {
+            // TODO: May want to wire IOC in here instead of in MvcApplication.Application_Start.
+            // Note that this runs before MvcApplication.Application_Start.
+
             ConfigureAccounts(app);
         }
     }

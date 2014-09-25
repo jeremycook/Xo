@@ -18,29 +18,14 @@ namespace Xo.Areas.Accounts.Controllers
     [Route("Account/{Action}")]
     public class AccountController : Controller
     {
-        private ApplicationUserManager _userManager;
-
-        public AccountController()
-        {
-        }
-
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
         }
 
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
-        }
+        public ApplicationUserManager UserManager { get; private set; }
+        public ApplicationSignInManager SignInManager { get; private set; }
 
         //
         // GET: /Account/Login
@@ -51,16 +36,6 @@ namespace Xo.Areas.Accounts.Controllers
             return View();
         }
 
-        private ApplicationSignInManager _signInManager;
-
-        public ApplicationSignInManager SignInManager
-        {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set { _signInManager = value; }
-        }
 
         //
         // POST: /Account/Login
@@ -328,7 +303,7 @@ namespace Xo.Areas.Accounts.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+            var loginInfo = await SignInManager.AuthenticationManager.GetExternalLoginInfoAsync();
             if (loginInfo == null)
             {
                 return RedirectToAction("Login");
@@ -368,7 +343,7 @@ namespace Xo.Areas.Accounts.Controllers
             if (ModelState.IsValid)
             {
                 // Get the information about the user from the external login provider
-                var info = await AuthenticationManager.GetExternalLoginInfoAsync();
+                var info = await SignInManager.AuthenticationManager.GetExternalLoginInfoAsync();
                 if (info == null)
                 {
                     return View("ExternalLoginFailure");
@@ -397,7 +372,7 @@ namespace Xo.Areas.Accounts.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut();
+            SignInManager.AuthenticationManager.SignOut();
             return RedirectToAction("Index", "Home", new { area = "" });
         }
 
@@ -412,14 +387,6 @@ namespace Xo.Areas.Accounts.Controllers
         #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
-
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
 
         private void AddErrors(IdentityResult result)
         {

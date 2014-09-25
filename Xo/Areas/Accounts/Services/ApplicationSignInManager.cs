@@ -14,7 +14,10 @@ namespace Xo.Areas.Accounts.Services
     // Configure the application sign-in manager which is used in this application.
     public class ApplicationSignInManager : SignInManager<ApplicationUser, Guid>
     {
-        public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)
+        /// <remarks>
+        /// Private because I don't want to accidentally use this instead of the Create method.
+        /// </remarks>
+        private ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)
             : base(userManager, authenticationManager)
         {
         }
