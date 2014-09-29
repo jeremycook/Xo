@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Xo.Areas.Accounts.Models;
-using Xo.Areas.Accounts.Services;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Xo.Areas.Accounts.Models;
+using Xo.Areas.Accounts.Services;
 using Xo.Infrastructure;
+using Xo.Infrastructure.Alerts;
 
 namespace Xo.Areas.Accounts.Controllers
 {
@@ -32,15 +33,6 @@ namespace Xo.Areas.Accounts.Controllers
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
-                : "";
-
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
@@ -49,7 +41,14 @@ namespace Xo.Areas.Accounts.Controllers
                 Logins = await UserManager.GetLoginsAsync(CurrentUser.User.Id),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(CurrentUser.User.Id)
             };
-            return View(model);
+            var result = View(model);
+            return message == ManageMessageId.ChangePasswordSuccess ? result.WithSuccess("Your password has been changed.")
+                : message == ManageMessageId.SetPasswordSuccess ? result.WithSuccess("Your password has been set.")
+                : message == ManageMessageId.SetTwoFactorSuccess ? result.WithSuccess("Your two-factor authentication provider has been set.")
+                : message == ManageMessageId.Error ? result.WithError("An error has occurred.")
+                : message == ManageMessageId.AddPhoneSuccess ? result.WithSuccess("Your phone number was added.")
+                : message == ManageMessageId.RemovePhoneSuccess ? result.WithSuccess("Your phone number was removed.")
+                : result;
         }
 
         //
@@ -113,7 +112,8 @@ namespace Xo.Areas.Accounts.Controllers
                 };
                 await UserManager.SmsService.SendAsync(message);
             }
-            return RedirectToAction("VerifyPhoneNumber", new { PhoneNumber = model.Number });
+            return RedirectToAction("VerifyPhoneNumber", new { PhoneNumber = model.Number })
+                .WithInfo("A security code has been sent to the phone number you provided.");
         }
 
         //
@@ -127,7 +127,8 @@ namespace Xo.Areas.Accounts.Controllers
             {
                 await SignInAsync(user, isPersistent: false);
             }
-            return RedirectToAction("Index", "Manage");
+            return RedirectToAction("Index", "Manage")
+                .WithSuccess("Two factor authentication is enabled for your account.");
         }
 
         //
@@ -141,7 +142,8 @@ namespace Xo.Areas.Accounts.Controllers
             {
                 await SignInAsync(user, isPersistent: false);
             }
-            return RedirectToAction("Index", "Manage");
+            return RedirectToAction("Index", "Manage")
+                .WithSuccess("Two factor authentication is disabled for your account.");
         }
 
         //
@@ -262,10 +264,6 @@ namespace Xo.Areas.Accounts.Controllers
         // GET: /Manage/ManageLogins
         public async Task<ActionResult> ManageLogins(ManageMessageId? message)
         {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : "";
             var user = CurrentUser.User;
             if (user == null)
             {
@@ -274,11 +272,15 @@ namespace Xo.Areas.Accounts.Controllers
             var userLogins = await UserManager.GetLoginsAsync(CurrentUser.User.Id);
             var otherLogins = AuthenticationManager.GetExternalAuthenticationTypes().Where(auth => userLogins.All(ul => auth.AuthenticationType != ul.LoginProvider)).ToList();
             ViewBag.ShowRemoveButton = user.PasswordHash != null || userLogins.Count > 1;
-            return View(new ManageLoginsViewModel
+
+            var result = View(new ManageLoginsViewModel
             {
                 CurrentLogins = userLogins,
                 OtherLogins = otherLogins
             });
+            return message == ManageMessageId.RemoveLoginSuccess ? result.WithSuccess("The external login was removed.")
+                : message == ManageMessageId.Error ? result.WithError("An error has occurred.")
+                : result;
         }
 
         //
