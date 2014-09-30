@@ -1,13 +1,10 @@
 ﻿using StructureMap;
-using StructureMap.Graph;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Xo.Infrastructure;
+using Xo.Infrastructure.ModelMetadata;
 using Xo.Infrastructure.Tasks;
 
 namespace Xo
@@ -35,7 +32,7 @@ namespace Xo
                         cfg.AddRegistry(new ActionFilterRegistry(() => Container ?? _AppContainer));
                         cfg.AddRegistry(new MvcRegistry());
                         cfg.AddRegistry(new TaskRegistry());
-                        // TODO: cfg.AddRegistry(new ModelMetadataRegistry());
+                        cfg.AddRegistry(new ModelMetadataRegistry());
                     });
                 }
 
