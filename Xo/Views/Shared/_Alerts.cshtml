@@ -1,4 +1,5 @@
-﻿@if (TempData.GetAlerts().Any())
+﻿@using Xo.Infrastructure.Alerts
+@if (TempData.GetAlerts().Any())
 {
     foreach (var alert in TempData.GetAlerts())
     {
