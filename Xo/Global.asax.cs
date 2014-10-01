@@ -11,7 +11,7 @@ namespace Xo
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        private static StructureMap.Container _AppContainer;
+        private StructureMap.Container _AppContainer;
 
         /// <summary>
         /// Returns the application container once lazily created.
@@ -20,20 +20,22 @@ namespace Xo
         {
             get
             {
+                // CODESMELL TODO: What is the best way to do this?
                 if (_AppContainer == null)
                 {
                     // Create before configuring so that configuration can safely
                     // refer to the application container.
-                    _AppContainer = new Container();
-                    _AppContainer.Configure(cfg =>
+                    var appContainer = new Container();
+                    appContainer.Configure(cfg =>
                     {
                         cfg.AddRegistry(new StandardRegistry());
                         cfg.AddRegistry(new ControllerRegistry());
-                        cfg.AddRegistry(new ActionFilterRegistry(() => Container ?? _AppContainer));
+                        cfg.AddRegistry(new ActionFilterRegistry(() => Container ?? appContainer));
                         cfg.AddRegistry(new MvcRegistry());
                         cfg.AddRegistry(new TaskRegistry());
                         cfg.AddRegistry(new ModelMetadataRegistry());
                     });
+                    _AppContainer = appContainer;
                 }
 
                 return _AppContainer;
