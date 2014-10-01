@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Web;
-using Xo.Areas.Accounts.Models;
+using Xo.Areas.Identity.Models;
 
 namespace Xo.Infrastructure
 {
@@ -27,7 +27,7 @@ namespace Xo.Infrastructure
             {
                 if (_user == null)
                 {
-                    var userId = Xo.Areas.Accounts.IdentityExtensions.GetUserId(Identity);
+                    var userId = Xo.Areas.Identity.IdentityExtensions.GetUserId(Identity);
                     _user = Db.Users.SingleOrDefault(o => o.Id == userId);
                 }
 
