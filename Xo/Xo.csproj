@@ -193,6 +193,7 @@
     <Compile Include="Infrastructure\ICurrentUser.cs" />
     <Compile Include="Infrastructure\ModelMetadata\ExtensibleModelMetadataProvider.cs" />
     <Compile Include="Infrastructure\ModelMetadata\Filters\LabelConventionFilter.cs" />
+    <Compile Include="Infrastructure\ModelMetadata\Filters\ReadOnlyTemplateSelectorFilter.cs" />
     <Compile Include="Infrastructure\ModelMetadata\IModelMetadataFilter.cs" />
     <Compile Include="Infrastructure\ModelMetadata\ModelMetadataRegistry.cs" />
     <Compile Include="Infrastructure\MvcRegistry.cs" />
@@ -278,6 +279,7 @@
     <Content Include="Views\Shared\EditorTemplates\Password.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\PhoneNumber.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\String.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\ReadOnly.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
