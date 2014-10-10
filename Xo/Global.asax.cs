@@ -1,4 +1,5 @@
 ﻿using StructureMap;
+using System;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -11,35 +12,27 @@ namespace Xo
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        private StructureMap.Container _AppContainer;
+        private readonly Lazy<StructureMap.Container> _LazyAppContainer;
+
+        public MvcApplication()
+        {
+            _LazyAppContainer = new Lazy<Container>(() => new Container(cfg =>
+            {
+                cfg.AddRegistry(new StandardRegistry());
+                cfg.AddRegistry(new ControllerRegistry());
+                cfg.AddRegistry(new ActionFilterRegistry(() => Container ?? AppContainer));
+                cfg.AddRegistry(new MvcRegistry());
+                cfg.AddRegistry(new TaskRegistry());
+                cfg.AddRegistry(new ModelMetadataRegistry());
+            }));
+        }
 
         /// <summary>
         /// Returns the application container once lazily created.
         /// </summary>
         public IContainer AppContainer
         {
-            get
-            {
-                // CODESMELL TODO: What is the best way to do this?
-                if (_AppContainer == null)
-                {
-                    // Create before configuring so that configuration can safely
-                    // refer to the application container.
-                    var appContainer = new Container();
-                    appContainer.Configure(cfg =>
-                    {
-                        cfg.AddRegistry(new StandardRegistry());
-                        cfg.AddRegistry(new ControllerRegistry());
-                        cfg.AddRegistry(new ActionFilterRegistry(() => Container ?? appContainer));
-                        cfg.AddRegistry(new MvcRegistry());
-                        cfg.AddRegistry(new TaskRegistry());
-                        cfg.AddRegistry(new ModelMetadataRegistry());
-                    });
-                    _AppContainer = appContainer;
-                }
-
-                return _AppContainer;
-            }
+            get { return _LazyAppContainer.Value; }
         }
 
         /// <summary>
@@ -114,9 +107,7 @@ namespace Xo
         public override void Dispose()
         {
             base.Dispose();
-
             AppContainer.Dispose();
-            Container = null;
         }
     }
 }
