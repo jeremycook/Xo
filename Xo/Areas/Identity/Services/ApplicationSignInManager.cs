@@ -22,14 +22,14 @@ namespace Xo.Areas.Identity.Services
         {
         }
 
-        public override Guid ConvertIdFromString(string id)
-        {
-            return string.IsNullOrEmpty(id) ? Guid.Empty : Guid.Parse(id);
-        }
-
         public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
+        }
+
+        public override Guid ConvertIdFromString(string id)
+        {
+            return string.IsNullOrEmpty(id) ? Guid.Empty : Guid.Parse(id);
         }
     }
 }

@@ -17,7 +17,8 @@ namespace Xo.Areas.Identity.Services
         IUserTwoFactorStore<User, Guid>,
         IUserLoginStore<User, Guid>,
         IUserLockoutStore<User, Guid>,
-        IUserSecurityStampStore<User, Guid>
+        IUserSecurityStampStore<User, Guid>,
+        IUserRoleStore<User, Guid>
     {
         private readonly IdentityDbContext ApplicationDbContext;
 
@@ -211,7 +212,6 @@ namespace Xo.Areas.Identity.Services
         {
             user.AccessFailedCount += 1;
             await ApplicationDbContext.SaveChangesAsync();
-            // TODO: I'm suppossed to return an integer. Is this the right one?
             return user.AccessFailedCount;
         }
 
@@ -240,10 +240,54 @@ namespace Xo.Areas.Identity.Services
             return await Task.FromResult(user.SecurityStamp);
         }
 
-        public async  Task SetSecurityStampAsync(User user, string stamp)
+        public async Task SetSecurityStampAsync(User user, string stamp)
         {
             user.SecurityStamp = stamp;
             await ApplicationDbContext.SaveChangesAsync();
+        }
+
+        //// IUserRoleStore
+
+        public async Task AddToRoleAsync(User user, string roleName)
+        {
+            var role = await ApplicationDbContext.Roles.SingleOrDefaultAsync(o => o.Name.Equals(roleName, StringComparison.OrdinalIgnoreCase));
+            user.Roles.Add(new UserRole(role));
+            await ApplicationDbContext.SaveChangesAsync();
+        }
+
+        public async Task<IList<string>> GetRolesAsync(User user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+
+            return await Task.FromResult(user.Roles.Select(o => o.Role.Name).ToList());
+        }
+
+        public async Task<bool> IsInRoleAsync(User user, string roleName)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+
+            return await Task.FromResult(user.Roles.Any(o => o.Role.Name == roleName));
+        }
+
+        public async Task RemoveFromRoleAsync(User user, string roleName)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+
+            var userRole = user.Roles.SingleOrDefault(o => o.Role.Name == roleName);
+            if (userRole != null)
+            {
+                user.Roles.Remove(userRole);
+                await ApplicationDbContext.SaveChangesAsync();
+            }
         }
     }
 }

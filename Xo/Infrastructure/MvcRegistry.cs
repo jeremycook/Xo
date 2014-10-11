@@ -22,7 +22,6 @@ namespace Xo.Infrastructure
             For<HttpSessionStateBase>().Use(() => new HttpSessionStateWrapper(HttpContext.Current.Session));
             For<HttpContextBase>().Use(() => new HttpContextWrapper(HttpContext.Current));
             For<HttpServerUtilityBase>().Use(() => new HttpServerUtilityWrapper(HttpContext.Current.Server));
-            For<IAuthenticationManager>().Use(() => HttpContext.Current.GetOwinContext().Authentication);
         }
     }
 }

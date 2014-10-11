@@ -33,6 +33,8 @@ namespace Xo.Areas.Identity.Models
             this.Id = id;
             this.Logins = new List<IdentityUserLogin>();
             this.LockoutEndDate = DateTimeOffset.UtcNow.AddMinutes(-1);
+            this.Logins = new List<IdentityUserLogin>();
+            this.Roles = new List<UserRole>();
         }
 
         //// Password
@@ -70,5 +72,9 @@ namespace Xo.Areas.Identity.Models
         //// Security Stamp
 
         public string SecurityStamp { get; set; }
+
+        //// User Roles
+
+        public virtual ICollection<UserRole> Roles { get; private set; }
     }
 }

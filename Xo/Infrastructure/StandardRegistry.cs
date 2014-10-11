@@ -23,9 +23,12 @@ namespace Xo.Infrastructure
                 scan.WithDefaultConventions();
             });
 
-            // CODESMELL
+            // CODESMELL Although currently working, it makes me nervous
+            // because the managers get their identity db context from OWIN and
+            // not this container.
             For<IAuthenticationManager>().Use(() => HttpContext.Current.GetOwinContext().Authentication);
             For<ApplicationUserManager>().Use(() => HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>());
+            For<ApplicationRoleManager>().Use(() => HttpContext.Current.GetOwinContext().GetUserManager<ApplicationRoleManager>());
             For<ApplicationSignInManager>().Use(() => HttpContext.Current.GetOwinContext().Get<ApplicationSignInManager>());
         }
     }
