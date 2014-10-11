@@ -10,22 +10,22 @@ using Xo.Areas.Identity.Models;
 namespace Xo.Areas.Identity.Services
 {
     // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
-    public class ApplicationUserManager : UserManager<ApplicationUser, Guid>
+    public class ApplicationUserManager : UserManager<User, Guid>
     {
         /// <remarks>
         /// Private because I don't want to accidentally use this instead of the Create method.
         /// </remarks>
-        private ApplicationUserManager(IUserStore<ApplicationUser, Guid> store)
+        private ApplicationUserManager(IUserStore<User, Guid> store)
             : base(store)
         {
         }
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
-            var manager = new ApplicationUserManager(new UserStore(context.Get<ApplicationDbContext>()));
+            var manager = new ApplicationUserManager(new UserStore(context.Get<IdentityDbContext>()));
 
             // Configure validation logic for usernames
-            manager.UserValidator = new UserValidator<ApplicationUser, Guid>(manager)
+            manager.UserValidator = new UserValidator<User, Guid>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
@@ -48,11 +48,11 @@ namespace Xo.Areas.Identity.Services
 
             // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
             // You can write your own provider and plug it in here.
-            manager.RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<ApplicationUser, Guid>
+            manager.RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<User, Guid>
             {
                 MessageFormat = "Your security code is {0}"
             });
-            manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<ApplicationUser, Guid>
+            manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<User, Guid>
             {
                 Subject = "Security Code",
                 BodyFormat = "Your security code is {0}"
@@ -66,7 +66,7 @@ namespace Xo.Areas.Identity.Services
             {
                 // Using the purpose "ASP.NET Identity" for now because I'm not sure
                 // if that same purpose is used elsewhere by other code.
-                manager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser, Guid>(
+                manager.UserTokenProvider = new DataProtectorTokenProvider<User, Guid>(
                     dataProtectionProvider.Create("ASP.NET Identity"));
             }
 

@@ -168,9 +168,9 @@
     <Compile Include="Areas\Identity\Controllers\ManageController.cs" />
     <Compile Include="Areas\Identity\Helpers\IdentityExtensions.cs" />
     <Compile Include="Areas\Identity\Models\AccountViewModels.cs" />
-    <Compile Include="Areas\Identity\Models\ApplicationDbContext.cs" />
-    <Compile Include="Areas\Identity\Models\ApplicationUser.cs" />
-    <Compile Include="Areas\Identity\Models\IdentityUser.cs" />
+    <Compile Include="Areas\Identity\Models\IdentityDbContext.cs" />
+    <Compile Include="Areas\Identity\Models\User.cs" />
+    <Compile Include="Areas\Identity\Models\UserBase.cs" />
     <Compile Include="Areas\Identity\Models\ManageViewModels.cs" />
     <Compile Include="Areas\Identity\Models\IdentityUserLogin.cs" />
     <Compile Include="Areas\Identity\Services\ApplicationSignInManager.cs" />

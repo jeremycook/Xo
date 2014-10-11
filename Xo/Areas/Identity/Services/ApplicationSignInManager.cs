@@ -12,7 +12,7 @@ using Xo.Areas.Identity.Models;
 namespace Xo.Areas.Identity.Services
 {
     // Configure the application sign-in manager which is used in this application.
-    public class ApplicationSignInManager : SignInManager<ApplicationUser, Guid>
+    public class ApplicationSignInManager : SignInManager<User, Guid>
     {
         /// <remarks>
         /// Private because I don't want to accidentally use this instead of the Create method.

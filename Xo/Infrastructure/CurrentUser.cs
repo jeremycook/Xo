@@ -12,16 +12,16 @@ namespace Xo.Infrastructure
     public class CurrentUser : ICurrentUser
     {
         private readonly IIdentity Identity;
-        private readonly ApplicationDbContext Db;
-        private ApplicationUser _user;
+        private readonly IdentityDbContext Db;
+        private User _user;
 
-        public CurrentUser(IIdentity identity, ApplicationDbContext db)
+        public CurrentUser(IIdentity identity, IdentityDbContext db)
         {
             Identity = identity;
             Db = db;
         }
 
-        public ApplicationUser User
+        public User User
         {
             get
             {

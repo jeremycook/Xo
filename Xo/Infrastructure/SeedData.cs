@@ -9,9 +9,9 @@ namespace Xo.Infrastructure
 {
     public class SeedData : IRunAtStartup
     {
-        private readonly ApplicationDbContext Db;
+        private readonly IdentityDbContext Db;
 
-        public SeedData(ApplicationDbContext db)
+        public SeedData(IdentityDbContext db)
         {
             Db = db;
         }

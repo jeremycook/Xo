@@ -132,7 +132,7 @@ namespace Xo.Areas.Identity.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser(Guid.NewGuid()) { UserName = model.Email, Email = model.Email };
+                var user = new User(Guid.NewGuid()) { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -348,7 +348,7 @@ namespace Xo.Areas.Identity.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser(Guid.NewGuid()) { UserName = model.Email, Email = model.Email };
+                var user = new User(Guid.NewGuid()) { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

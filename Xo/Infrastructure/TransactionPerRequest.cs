@@ -11,9 +11,9 @@ namespace Xo.Infrastructure
 {
     public class TransactionPerRequest : IRunOnEachRequest, IRunOnError, IRunAfterEachRequest
     {
-        private readonly ApplicationDbContext Db;
+        private readonly IdentityDbContext Db;
         private readonly HttpContextBase HttpContext;
-        public TransactionPerRequest(ApplicationDbContext db, HttpContextBase httpContext)
+        public TransactionPerRequest(IdentityDbContext db, HttpContextBase httpContext)
         {
             Db = db;
             HttpContext = httpContext;

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Xo.Areas.Identity.Models
 {
-    public abstract class IdentityUser : IUser<Guid>
+    public abstract class UserBase : IUser<Guid>
     {
         public Guid Id { get; set; }
         public string UserName { get; set; }

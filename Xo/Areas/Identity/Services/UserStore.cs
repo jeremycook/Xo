@@ -10,25 +10,25 @@ using Xo.Areas.Identity.Models;
 namespace Xo.Areas.Identity.Services
 {
     public class UserStore :
-        IUserStore<ApplicationUser, Guid>,
-        IUserPasswordStore<ApplicationUser, Guid>,
-        IUserEmailStore<ApplicationUser, Guid>,
-        IUserPhoneNumberStore<ApplicationUser, Guid>,
-        IUserTwoFactorStore<ApplicationUser, Guid>,
-        IUserLoginStore<ApplicationUser, Guid>,
-        IUserLockoutStore<ApplicationUser, Guid>,
-        IUserSecurityStampStore<ApplicationUser, Guid>
+        IUserStore<User, Guid>,
+        IUserPasswordStore<User, Guid>,
+        IUserEmailStore<User, Guid>,
+        IUserPhoneNumberStore<User, Guid>,
+        IUserTwoFactorStore<User, Guid>,
+        IUserLoginStore<User, Guid>,
+        IUserLockoutStore<User, Guid>,
+        IUserSecurityStampStore<User, Guid>
     {
-        private readonly ApplicationDbContext ApplicationDbContext;
+        private readonly IdentityDbContext ApplicationDbContext;
 
         //// IUserStore
 
-        public UserStore(ApplicationDbContext applicationDbContext)
+        public UserStore(IdentityDbContext applicationDbContext)
         {
             ApplicationDbContext = applicationDbContext;
         }
 
-        public async Task CreateAsync(ApplicationUser user)
+        public async Task CreateAsync(User user)
         {
             if (user.Id == Guid.Empty)
             {
@@ -39,23 +39,23 @@ namespace Xo.Areas.Identity.Services
             await ApplicationDbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(ApplicationUser user)
+        public async Task DeleteAsync(User user)
         {
             ApplicationDbContext.Users.Remove(user);
             await ApplicationDbContext.SaveChangesAsync();
         }
 
-        public async Task<ApplicationUser> FindByIdAsync(Guid userId)
+        public async Task<User> FindByIdAsync(Guid userId)
         {
             return await ApplicationDbContext.Users.SingleOrDefaultAsync(o => o.Id == userId);
         }
 
-        public async Task<ApplicationUser> FindByNameAsync(string userName)
+        public async Task<User> FindByNameAsync(string userName)
         {
             return await ApplicationDbContext.Users.SingleOrDefaultAsync(o => o.UserName == userName);
         }
 
-        public async Task UpdateAsync(ApplicationUser user)
+        public async Task UpdateAsync(User user)
         {
             ApplicationDbContext.Entry(user).State = EntityState.Modified;
             await ApplicationDbContext.SaveChangesAsync();
@@ -68,17 +68,17 @@ namespace Xo.Areas.Identity.Services
 
         //// IUserPasswordStore
 
-        public async Task<string> GetPasswordHashAsync(ApplicationUser user)
+        public async Task<string> GetPasswordHashAsync(User user)
         {
             return await Task.FromResult(user.PasswordHash);
         }
 
-        public async Task<bool> HasPasswordAsync(ApplicationUser user)
+        public async Task<bool> HasPasswordAsync(User user)
         {
             return await Task.FromResult(user.PasswordHash != null);
         }
 
-        public async Task SetPasswordHashAsync(ApplicationUser user, string passwordHash)
+        public async Task SetPasswordHashAsync(User user, string passwordHash)
         {
             user.PasswordHash = passwordHash;
             await ApplicationDbContext.SaveChangesAsync();
@@ -86,28 +86,28 @@ namespace Xo.Areas.Identity.Services
 
         //// IUserEmailStore
 
-        public async Task<ApplicationUser> FindByEmailAsync(string email)
+        public async Task<User> FindByEmailAsync(string email)
         {
             return await ApplicationDbContext.Users.SingleOrDefaultAsync(o => o.Email == email);
         }
 
-        public async Task<string> GetEmailAsync(ApplicationUser user)
+        public async Task<string> GetEmailAsync(User user)
         {
             return await Task.FromResult(user.Email);
         }
 
-        public async Task<bool> GetEmailConfirmedAsync(ApplicationUser user)
+        public async Task<bool> GetEmailConfirmedAsync(User user)
         {
             return await Task.FromResult(user.EmailConfirmed);
         }
 
-        public async Task SetEmailAsync(ApplicationUser user, string email)
+        public async Task SetEmailAsync(User user, string email)
         {
             user.Email = email;
             await ApplicationDbContext.SaveChangesAsync();
         }
 
-        public async Task SetEmailConfirmedAsync(ApplicationUser user, bool confirmed)
+        public async Task SetEmailConfirmedAsync(User user, bool confirmed)
         {
             user.EmailConfirmed = confirmed;
             await ApplicationDbContext.SaveChangesAsync();
@@ -115,23 +115,23 @@ namespace Xo.Areas.Identity.Services
 
         //// IUserPhoneNumberStore
 
-        public async Task<string> GetPhoneNumberAsync(ApplicationUser user)
+        public async Task<string> GetPhoneNumberAsync(User user)
         {
             return await Task.FromResult(user.PhoneNumber);
         }
 
-        public async Task<bool> GetPhoneNumberConfirmedAsync(ApplicationUser user)
+        public async Task<bool> GetPhoneNumberConfirmedAsync(User user)
         {
             return await Task.FromResult(user.PhoneNumberConfirmed);
         }
 
-        public async Task SetPhoneNumberAsync(ApplicationUser user, string phoneNumber)
+        public async Task SetPhoneNumberAsync(User user, string phoneNumber)
         {
             user.PhoneNumber = phoneNumber;
             await ApplicationDbContext.SaveChangesAsync();
         }
 
-        public async Task SetPhoneNumberConfirmedAsync(ApplicationUser user, bool confirmed)
+        public async Task SetPhoneNumberConfirmedAsync(User user, bool confirmed)
         {
             user.PhoneNumberConfirmed = confirmed;
             await ApplicationDbContext.SaveChangesAsync();
@@ -139,12 +139,12 @@ namespace Xo.Areas.Identity.Services
 
         //// IUserTwoFactorStore
 
-        public async Task<bool> GetTwoFactorEnabledAsync(ApplicationUser user)
+        public async Task<bool> GetTwoFactorEnabledAsync(User user)
         {
             return await Task.FromResult(user.TwoFactorEnabled);
         }
 
-        public async Task SetTwoFactorEnabledAsync(ApplicationUser user, bool enabled)
+        public async Task SetTwoFactorEnabledAsync(User user, bool enabled)
         {
             user.TwoFactorEnabled = enabled;
             await ApplicationDbContext.SaveChangesAsync();
@@ -152,14 +152,14 @@ namespace Xo.Areas.Identity.Services
 
         //// IUserLoginStore
 
-        public async Task AddLoginAsync(ApplicationUser user, UserLoginInfo loginInfo)
+        public async Task AddLoginAsync(User user, UserLoginInfo loginInfo)
         {
             ApplicationDbContext.Logins
                 .Add(new IdentityUserLogin(user.Id, loginInfo.LoginProvider, loginInfo.ProviderKey));
             await ApplicationDbContext.SaveChangesAsync();
         }
 
-        public async Task<ApplicationUser> FindAsync(UserLoginInfo loginInfo)
+        public async Task<User> FindAsync(UserLoginInfo loginInfo)
         {
             return await ApplicationDbContext.Users.SingleOrDefaultAsync(u =>
                 ApplicationDbContext.Logins
@@ -167,7 +167,7 @@ namespace Xo.Areas.Identity.Services
                     .Select(o => o.UserId).Contains(u.Id));
         }
 
-        public async Task<IList<UserLoginInfo>> GetLoginsAsync(ApplicationUser user)
+        public async Task<IList<UserLoginInfo>> GetLoginsAsync(User user)
         {
             var logins = await ApplicationDbContext.Logins
                     .Where(o => o.UserId == user.Id)
@@ -178,7 +178,7 @@ namespace Xo.Areas.Identity.Services
                 .ToList();
         }
 
-        public async Task RemoveLoginAsync(ApplicationUser user, UserLoginInfo loginInfo)
+        public async Task RemoveLoginAsync(User user, UserLoginInfo loginInfo)
         {
             var login = await ApplicationDbContext.Logins
                 .SingleOrDefaultAsync(o =>
@@ -192,22 +192,22 @@ namespace Xo.Areas.Identity.Services
 
         //// IUserLockoutStore
 
-        public async Task<int> GetAccessFailedCountAsync(ApplicationUser user)
+        public async Task<int> GetAccessFailedCountAsync(User user)
         {
             return await Task.FromResult(user.AccessFailedCount);
         }
 
-        public async Task<bool> GetLockoutEnabledAsync(ApplicationUser user)
+        public async Task<bool> GetLockoutEnabledAsync(User user)
         {
             return await Task.FromResult(user.LockoutEnabled);
         }
 
-        public async Task<DateTimeOffset> GetLockoutEndDateAsync(ApplicationUser user)
+        public async Task<DateTimeOffset> GetLockoutEndDateAsync(User user)
         {
             return await Task.FromResult(user.LockoutEndDate);
         }
 
-        public async Task<int> IncrementAccessFailedCountAsync(ApplicationUser user)
+        public async Task<int> IncrementAccessFailedCountAsync(User user)
         {
             user.AccessFailedCount += 1;
             await ApplicationDbContext.SaveChangesAsync();
@@ -215,19 +215,19 @@ namespace Xo.Areas.Identity.Services
             return user.AccessFailedCount;
         }
 
-        public async Task ResetAccessFailedCountAsync(ApplicationUser user)
+        public async Task ResetAccessFailedCountAsync(User user)
         {
             user.AccessFailedCount = 0;
             await ApplicationDbContext.SaveChangesAsync();
         }
 
-        public async Task SetLockoutEnabledAsync(ApplicationUser user, bool enabled)
+        public async Task SetLockoutEnabledAsync(User user, bool enabled)
         {
             user.LockoutEnabled = enabled;
             await ApplicationDbContext.SaveChangesAsync();
         }
 
-        public async Task SetLockoutEndDateAsync(ApplicationUser user, DateTimeOffset lockoutEnd)
+        public async Task SetLockoutEndDateAsync(User user, DateTimeOffset lockoutEnd)
         {
             user.LockoutEndDate = lockoutEnd;
             await ApplicationDbContext.SaveChangesAsync();
@@ -235,12 +235,12 @@ namespace Xo.Areas.Identity.Services
 
         //// IUserSecurityStampStore
 
-        public async Task<string> GetSecurityStampAsync(ApplicationUser user)
+        public async Task<string> GetSecurityStampAsync(User user)
         {
             return await Task.FromResult(user.SecurityStamp);
         }
 
-        public async  Task SetSecurityStampAsync(ApplicationUser user, string stamp)
+        public async  Task SetSecurityStampAsync(User user, string stamp)
         {
             user.SecurityStamp = stamp;
             await ApplicationDbContext.SaveChangesAsync();

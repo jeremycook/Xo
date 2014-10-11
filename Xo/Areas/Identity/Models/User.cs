@@ -9,7 +9,7 @@ using Xo.Areas.Identity.Services;
 namespace Xo.Areas.Identity.Models
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
-    public class ApplicationUser : IdentityUser
+    public class User : UserBase
     {
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(ApplicationUserManager manager)
         {
@@ -20,7 +20,7 @@ namespace Xo.Areas.Identity.Models
         }
 
         [Obsolete("Runtime use only.", error: true)]
-        public ApplicationUser()
+        public User()
         {
         }
 
@@ -28,7 +28,7 @@ namespace Xo.Areas.Identity.Models
         /// Construct a brand new, not yet in the database, user.
         /// </summary>
         /// <param name="id"></param>
-        public ApplicationUser(Guid id)
+        public User(Guid id)
         {
             this.Id = id;
             this.Logins = new List<IdentityUserLogin>();

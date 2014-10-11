@@ -9,6 +9,6 @@ namespace Xo.Infrastructure
 {
     public interface ICurrentUser
     {
-        ApplicationUser User { get; }
+        User User { get; }
     }
 }
