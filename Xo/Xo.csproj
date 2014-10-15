@@ -172,7 +172,7 @@
     <Compile Include="Areas\Identity\Models\UserRole.cs" />
     <Compile Include="Areas\Identity\Models\IdentityDbContext.cs" />
     <Compile Include="Areas\Identity\Models\ManageViewModels.cs" />
-    <Compile Include="Areas\Identity\Models\IdentityUserLogin.cs" />
+    <Compile Include="Areas\Identity\Models\UserLogin.cs" />
     <Compile Include="Areas\Identity\Models\User.cs" />
     <Compile Include="Areas\Identity\Models\UserBase.cs" />
     <Compile Include="Areas\Identity\Services\ApplicationRoleManager.cs" />

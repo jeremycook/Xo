@@ -31,9 +31,9 @@ namespace Xo.Areas.Identity.Models
         public User(Guid id)
         {
             this.Id = id;
-            this.Logins = new List<IdentityUserLogin>();
+            this.Logins = new List<UserLogin>();
             this.LockoutEndDate = DateTimeOffset.UtcNow.AddMinutes(-1);
-            this.Logins = new List<IdentityUserLogin>();
+            this.Logins = new List<UserLogin>();
             this.Roles = new List<UserRole>();
         }
 
@@ -59,7 +59,7 @@ namespace Xo.Areas.Identity.Models
 
         //// External Logins
 
-        public virtual ICollection<IdentityUserLogin> Logins { get; private set; }
+        public virtual ICollection<UserLogin> Logins { get; private set; }
 
         //// Lockout
 

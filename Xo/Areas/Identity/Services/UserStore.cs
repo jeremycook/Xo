@@ -156,7 +156,7 @@ namespace Xo.Areas.Identity.Services
         public async Task AddLoginAsync(User user, UserLoginInfo loginInfo)
         {
             ApplicationDbContext.Logins
-                .Add(new IdentityUserLogin(user.Id, loginInfo.LoginProvider, loginInfo.ProviderKey));
+                .Add(new UserLogin(user.Id, loginInfo.LoginProvider, loginInfo.ProviderKey));
             await ApplicationDbContext.SaveChangesAsync();
         }
 

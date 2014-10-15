@@ -7,14 +7,12 @@ using System.Text;
 
 namespace Xo.Areas.Identity.Models
 {
-    public class IdentityUserLogin
+    public class UserLogin
     {
         [Obsolete("Runtime use only.", error: true)]
-        public IdentityUserLogin()
-        {
-        }
+        public UserLogin() { }
 
-        public IdentityUserLogin(Guid userId, string loginProvider, string providerKey)
+        public UserLogin(Guid userId, string loginProvider, string providerKey)
         {
             this.UserId = userId;
             this.LoginProvider = loginProvider;
