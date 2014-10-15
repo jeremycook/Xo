@@ -8,7 +8,7 @@ namespace Xo.Areas.Identity.Models
 {
     public abstract class UserBase : IUser<Guid>
     {
-        public Guid Id { get; set; }
-        public string UserName { get; set; }
+        public virtual Guid Id { get; set; }
+        public virtual string UserName { get; set; }
     }
 }
