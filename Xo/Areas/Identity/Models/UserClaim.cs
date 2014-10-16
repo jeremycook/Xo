@@ -15,21 +15,22 @@ namespace Xo.Areas.Identity.Models
         public UserClaim(Guid userId, string claimType, string claimValue)
         {
             this.UserId = userId;
-            this.ClaimType = claimType;
-            this.ClaimValue = claimValue;
+            this.Type = claimType;
+            this.Value = claimValue;
         }
 
         [Key, Column(Order = 1)]
         [Required]
         public Guid UserId { get; private set; }
+        public virtual User User { get; private set; }
 
         [Key, Column(Order = 2)]
         [Required]
-        public string ClaimType { get; private set; }
+        public string Type { get; private set; }
 
         [Key, Column(Order = 3)]
         [Required]
-        public string ClaimValue { get; private set; }
+        public string Value { get; private set; }
 
         /// <summary>
         /// Returns this user claim translated to a security claim.
@@ -37,7 +38,7 @@ namespace Xo.Areas.Identity.Models
         /// <returns></returns>
         public Claim ToSecurityClaim()
         {
-            return new Claim(ClaimType, ClaimValue);
+            return new Claim(Type, Value);
         }
     }
 }

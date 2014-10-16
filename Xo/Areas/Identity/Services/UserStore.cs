@@ -530,7 +530,7 @@ namespace Xo.Areas.Identity.Services
             }
 
             var userClaim = user.Claims
-                .SingleOrDefault(o => o.ClaimType == securityClaim.Type && o.ClaimValue == securityClaim.Value);
+                .SingleOrDefault(o => o.Type == securityClaim.Type && o.Value == securityClaim.Value);
             if (userClaim != null)
             {
                 user.Claims.Remove(userClaim);
