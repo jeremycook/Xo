@@ -26,5 +26,6 @@ namespace Xo.Areas.Identity.Models
         public virtual IDbSet<Role> Roles { get; set; }
         public virtual IDbSet<User> Users { get; set; }
         public virtual IDbSet<UserLogin> Logins { get; set; }
+        public virtual IDbSet<UserClaim> Claims { get; set; }
     }
 }

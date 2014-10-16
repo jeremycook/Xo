@@ -168,6 +168,7 @@
     <Compile Include="Areas\Identity\Controllers\ManageController.cs" />
     <Compile Include="Areas\Identity\Helpers\IdentityExtensions.cs" />
     <Compile Include="Areas\Identity\Models\AccountViewModels.cs" />
+    <Compile Include="Areas\Identity\Models\UserClaim.cs" />
     <Compile Include="Areas\Identity\Models\Role.cs" />
     <Compile Include="Areas\Identity\Models\UserRole.cs" />
     <Compile Include="Areas\Identity\Models\IdentityDbContext.cs" />

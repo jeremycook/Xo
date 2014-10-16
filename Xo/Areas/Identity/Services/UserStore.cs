@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Xo.Areas.Identity.Models;
@@ -18,7 +19,8 @@ namespace Xo.Areas.Identity.Services
         IUserLoginStore<User, Guid>,
         IUserLockoutStore<User, Guid>,
         IUserSecurityStampStore<User, Guid>,
-        IUserRoleStore<User, Guid>
+        IUserRoleStore<User, Guid>,
+        IUserClaimStore<User, Guid>
     {
         private readonly IdentityDbContext ApplicationDbContext;
 
@@ -286,6 +288,57 @@ namespace Xo.Areas.Identity.Services
             if (userRole != null)
             {
                 user.Roles.Remove(userRole);
+                await ApplicationDbContext.SaveChangesAsync();
+            }
+        }
+
+        //// IUserClaimStore
+
+        public async Task AddClaimAsync(User user, Claim securityClaim)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+            if (securityClaim == null)
+            {
+                throw new ArgumentNullException("securityClaim");
+            }
+
+            ApplicationDbContext.Claims.Add(new UserClaim(
+                userId: user.Id,
+                claimType: securityClaim.Type,
+                claimValue: securityClaim.Value));
+            await ApplicationDbContext.SaveChangesAsync();
+        }
+
+        public async Task<IList<Claim>> GetClaimsAsync(User user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+
+            var securityClaims = user.Claims.Select(o => o.ToSecurityClaim()).ToList();
+            return await Task.FromResult(securityClaims);
+        }
+
+        public async Task RemoveClaimAsync(User user, Claim securityClaim)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+            if (securityClaim == null)
+            {
+                throw new ArgumentNullException("securityClaim");
+            }
+
+            var userClaim = user.Claims
+                .SingleOrDefault(o => o.ClaimType == securityClaim.Type && o.ClaimValue == securityClaim.Value);
+            if (userClaim != null)
+            {
+                user.Claims.Remove(userClaim);
                 await ApplicationDbContext.SaveChangesAsync();
             }
         }

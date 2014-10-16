@@ -31,10 +31,10 @@ namespace Xo.Areas.Identity.Models
         public User(Guid id)
         {
             this.Id = id;
-            this.Logins = new List<UserLogin>();
             this.LockoutEndDate = DateTimeOffset.UtcNow.AddMinutes(-1);
             this.Logins = new List<UserLogin>();
             this.Roles = new List<UserRole>();
+            this.Claims = new List<UserClaim>();
         }
 
         //// Password
@@ -76,5 +76,9 @@ namespace Xo.Areas.Identity.Models
         //// User Roles
 
         public virtual ICollection<UserRole> Roles { get; private set; }
+
+        //// User Claims
+
+        public virtual ICollection<UserClaim> Claims { get; private set; }
     }
 }
