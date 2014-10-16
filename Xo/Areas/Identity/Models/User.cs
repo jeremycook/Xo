@@ -28,9 +28,10 @@ namespace Xo.Areas.Identity.Models
         /// Construct a brand new, not yet in the database, user.
         /// </summary>
         /// <param name="id"></param>
-        public User(Guid id)
+        public User(string userName)
         {
-            this.Id = id;
+            this.Id = Guid.NewGuid();
+            this.UserName = userName;
             this.LockoutEndDate = DateTimeOffset.UtcNow.AddMinutes(-1);
             this.Logins = new List<UserLogin>();
             this.Roles = new List<UserRole>();

@@ -20,12 +20,15 @@ namespace Xo.Areas.Identity.Models
         }
 
         [Key, Column(Order = 1)]
+        [Required]
         public Guid UserId { get; private set; }
 
         [Key, Column(Order = 2)]
+        [Required]
         public string LoginProvider { get; private set; }
 
         [Key, Column(Order = 3)]
+        [Required]
         public string ProviderKey { get; private set; }
     }
 }
