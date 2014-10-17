@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Web;
-using Xo.Areas.Identity.Models;
+using Xo.Areas.Identity.Domain;
 
 namespace Xo.Areas.Identity
 {

@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Xo.Areas.Identity.Models;
-using Xo.Areas.Identity.Services;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -10,6 +8,9 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Xo.Areas.Identity.Domain;
+using Xo.Areas.Identity.Models;
+using Xo.Areas.Identity.Services;
 
 namespace Xo.Areas.Identity.Controllers
 {

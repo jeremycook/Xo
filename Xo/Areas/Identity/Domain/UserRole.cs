@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 
-namespace Xo.Areas.Identity.Models
+namespace Xo.Areas.Identity.Domain
 {
     public class UserRole
     {

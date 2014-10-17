@@ -6,7 +6,7 @@ using Microsoft.Owin.Security.Google;
 using Owin;
 using System;
 using Xo.Areas.Identity;
-using Xo.Areas.Identity.Models;
+using Xo.Areas.Identity.Domain;
 using Xo.Areas.Identity.Services;
 
 namespace Xo

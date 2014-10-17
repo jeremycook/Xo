@@ -5,7 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using Xo.Areas.Identity.Models;
+using Xo.Areas.Identity.Domain;
 
 namespace Xo.Areas.Identity.Services
 {

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Xo.Areas.Identity.Domain;
 using Xo.Areas.Identity.Models;
 using Xo.Areas.Identity.Services;
 using Xo.Infrastructure;

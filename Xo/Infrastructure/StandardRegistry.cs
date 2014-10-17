@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
-using Xo.Areas.Identity.Models;
+using Xo.Areas.Identity.Domain;
 using Xo.Areas.Identity.Services;
 
 namespace Xo.Infrastructure

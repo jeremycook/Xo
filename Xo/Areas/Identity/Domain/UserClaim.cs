@@ -6,7 +6,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
-namespace Xo.Areas.Identity.Models
+namespace Xo.Areas.Identity.Domain
 {
     public class UserClaim
     {

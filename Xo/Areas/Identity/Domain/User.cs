@@ -6,7 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Xo.Areas.Identity.Services;
 
-namespace Xo.Areas.Identity.Models
+namespace Xo.Areas.Identity.Domain
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class User : UserBase

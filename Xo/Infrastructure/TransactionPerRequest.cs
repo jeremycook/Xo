@@ -4,7 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
-using Xo.Areas.Identity.Models;
+using Xo.Areas.Identity.Domain;
 using Xo.Infrastructure.Tasks;
 
 namespace Xo.Infrastructure
