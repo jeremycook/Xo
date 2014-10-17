@@ -10,8 +10,8 @@ using Xo.Areas.Identity.Models;
 namespace Xo.Areas.Identity.Services
 {
     public class RoleStore : 
-        IRoleStore<Role, Guid>, 
-        IQueryableRoleStore<Role, Guid>, 
+        IRoleStore<Role, int>, 
+        IQueryableRoleStore<Role, int>, 
         IDisposable
     {
         private readonly IdentityDbContext Db;
@@ -35,9 +35,10 @@ namespace Xo.Areas.Identity.Services
             await Db.SaveChangesAsync();
         }
 
-        public async Task<Role> FindByIdAsync(Guid roleId)
+        public async Task<Role> FindByIdAsync(int roleId)
         {
-            return await Db.Roles.SingleOrDefaultAsync(o => o.Id == roleId);
+            var id = (RoleId)roleId;
+            return await Db.Roles.SingleOrDefaultAsync(o => o.Id == id);
         }
 
         public async Task<Role> FindByNameAsync(string roleName)

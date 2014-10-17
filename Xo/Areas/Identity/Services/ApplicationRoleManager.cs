@@ -12,7 +12,7 @@ namespace Xo.Areas.Identity.Services
     /// <remarks>
     /// Private because I don't want to accidentally use this instead of the Create method.
     /// </remarks>
-    public class ApplicationRoleManager : RoleManager<Role, Guid>
+    public class ApplicationRoleManager : RoleManager<Role, int>
     {
         private ApplicationRoleManager(RoleStore roleStore) : base(roleStore) { }
 

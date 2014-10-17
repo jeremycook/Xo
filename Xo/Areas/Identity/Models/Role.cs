@@ -7,31 +7,31 @@ using System.Web;
 
 namespace Xo.Areas.Identity.Models
 {
-    public class Role : IRole<Guid>
+    public class Role : IRole<int>
     {
         [Obsolete("Runtime use only.", error: true)]
         public Role() { }
 
-        public Role(string name)
+        public Role(RoleId id, string name)
         {
-            this.Id = Guid.NewGuid();
+            this.Id = id;
             this.Name = name;
             this.Users = new List<UserRole>();
         }
 
-        public Guid Id { get; private set; }
+        public RoleId Id { get; private set; }
 
         [Required]
         public string Name { get; private set; }
         public string Description { get; set; }
         public virtual ICollection<UserRole> Users { get; private set; }
 
-        Guid IRole<Guid>.Id
+        int IRole<int>.Id
         {
-            get { return Id; }
+            get { return (int)Id; }
         }
 
-        string IRole<Guid>.Name
+        string IRole<int>.Name
         {
             get { return Name; }
             set { Name = value; }

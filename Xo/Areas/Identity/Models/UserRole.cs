@@ -12,7 +12,7 @@ namespace Xo.Areas.Identity.Models
         [Obsolete("Runtime use only.", error: true)]
         public UserRole() { }
 
-        public UserRole(Guid roleId)
+        public UserRole(RoleId roleId)
         {
             this.RoleId = roleId;
         }
@@ -22,7 +22,7 @@ namespace Xo.Areas.Identity.Models
         public virtual User User { get; private set; }
 
         [Key, Column(Order = 2)]
-        public Guid RoleId { get; private set; }
+        public RoleId RoleId { get; private set; }
         public virtual Role Role { get; private set; }
     }
 }
