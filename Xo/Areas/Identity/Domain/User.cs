@@ -30,7 +30,6 @@ namespace Xo.Areas.Identity.Domain
         /// <param name="id"></param>
         public User(string userName)
         {
-            this.Id = Guid.NewGuid();
             this.UserName = userName;
             this.LockoutEndDate = DateTimeOffset.UtcNow.AddMinutes(-1);
             this.Logins = new List<UserLogin>();

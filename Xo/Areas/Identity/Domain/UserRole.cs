@@ -18,7 +18,7 @@ namespace Xo.Areas.Identity.Domain
         }
 
         [Key, Column(Order = 1)]
-        public Guid UserId { get; private set; }
+        public UserId UserId { get; private set; }
         public virtual User User { get; private set; }
 
         [Key, Column(Order = 2)]

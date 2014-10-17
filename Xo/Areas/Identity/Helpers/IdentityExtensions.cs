@@ -19,9 +19,9 @@ namespace Xo.Areas.Identity
         /// </summary>
         /// <param name="identity"></param>
         /// <returns></returns>
-        public static Guid GetUserId(this ClaimsIdentity identity)
+        public static int GetUserId(this ClaimsIdentity identity)
         {
-            return Guid.Parse(Microsoft.AspNet.Identity.IdentityExtensions.GetUserId(identity));
+            return ((IIdentity)identity).GetUserId();
         }
 
         /// <summary>
@@ -29,9 +29,17 @@ namespace Xo.Areas.Identity
         /// </summary>
         /// <param name="identity"></param>
         /// <returns></returns>
-        public static Guid GetUserId(this IIdentity identity)
+        public static int GetUserId(this IIdentity identity)
         {
-            return Guid.Parse(Microsoft.AspNet.Identity.IdentityExtensions.GetUserId(identity));
+            int id;
+            if (int.TryParse(Microsoft.AspNet.Identity.IdentityExtensions.GetUserId(identity), out id))
+            {
+                return id;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         /// <summary>
@@ -40,7 +48,7 @@ namespace Xo.Areas.Identity
         /// <param name="manager"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public static async Task<bool> TwoFactorBrowserRememberedAsync(this IAuthenticationManager manager, Guid userId)
+        public static async Task<bool> TwoFactorBrowserRememberedAsync(this IAuthenticationManager manager, int userId)
         {
             return await Microsoft.Owin.Security.AuthenticationManagerExtensions.TwoFactorBrowserRememberedAsync(
                 manager,
@@ -54,7 +62,7 @@ namespace Xo.Areas.Identity
         /// <param name="xsrfKey"></param>
         /// <param name="expectedValue"></param>
         /// <returns></returns>
-        public static async Task<ExternalLoginInfo> GetExternalLoginInfoAsync(this IAuthenticationManager manager, string xsrfKey, Guid expectedValue)
+        public static async Task<ExternalLoginInfo> GetExternalLoginInfoAsync(this IAuthenticationManager manager, string xsrfKey, int expectedValue)
         {
             return await Microsoft.Owin.Security.AuthenticationManagerExtensions.GetExternalLoginInfoAsync(manager, xsrfKey, expectedValue.ToString());
         }

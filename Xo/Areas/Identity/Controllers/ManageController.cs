@@ -37,10 +37,10 @@ namespace Xo.Areas.Identity.Controllers
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
-                PhoneNumber = await UserManager.GetPhoneNumberAsync(CurrentUser.User.Id),
-                TwoFactor = await UserManager.GetTwoFactorEnabledAsync(CurrentUser.User.Id),
-                Logins = await UserManager.GetLoginsAsync(CurrentUser.User.Id),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(CurrentUser.User.Id)
+                PhoneNumber = await UserManager.GetPhoneNumberAsync((int)CurrentUser.User.Id),
+                TwoFactor = await UserManager.GetTwoFactorEnabledAsync((int)CurrentUser.User.Id),
+                Logins = await UserManager.GetLoginsAsync((int)CurrentUser.User.Id),
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync((int)CurrentUser.User.Id)
             };
             var result = View(model);
             return message == ManageMessageId.ChangePasswordSuccess ? result.WithSuccess("Your password has been changed.")
@@ -56,7 +56,7 @@ namespace Xo.Areas.Identity.Controllers
         // GET: /Manage/RemoveLogin
         public ActionResult RemoveLogin()
         {
-            var linkedAccounts = UserManager.GetLogins(CurrentUser.User.Id);
+            var linkedAccounts = UserManager.GetLogins((int)CurrentUser.User.Id);
             ViewBag.ShowRemoveButton = HasPassword() || linkedAccounts.Count > 1;
             return View(linkedAccounts);
         }
@@ -68,7 +68,7 @@ namespace Xo.Areas.Identity.Controllers
         public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
         {
             ManageMessageId? message;
-            var result = await UserManager.RemoveLoginAsync(CurrentUser.User.Id, new UserLoginInfo(loginProvider, providerKey));
+            var result = await UserManager.RemoveLoginAsync((int)CurrentUser.User.Id, new UserLoginInfo(loginProvider, providerKey));
             if (result.Succeeded)
             {
                 var user = CurrentUser.User;
@@ -103,7 +103,7 @@ namespace Xo.Areas.Identity.Controllers
                 return View(model);
             }
             // Generate the token and send it
-            var code = await UserManager.GenerateChangePhoneNumberTokenAsync(CurrentUser.User.Id, model.Number);
+            var code = await UserManager.GenerateChangePhoneNumberTokenAsync((int)CurrentUser.User.Id, model.Number);
             if (UserManager.SmsService != null)
             {
                 var message = new IdentityMessage
@@ -122,7 +122,7 @@ namespace Xo.Areas.Identity.Controllers
         [HttpPost]
         public async Task<ActionResult> EnableTwoFactorAuthentication()
         {
-            await UserManager.SetTwoFactorEnabledAsync(CurrentUser.User.Id, true);
+            await UserManager.SetTwoFactorEnabledAsync((int)CurrentUser.User.Id, true);
             var user = CurrentUser.User;
             if (user != null)
             {
@@ -137,7 +137,7 @@ namespace Xo.Areas.Identity.Controllers
         [HttpPost]
         public async Task<ActionResult> DisableTwoFactorAuthentication()
         {
-            await UserManager.SetTwoFactorEnabledAsync(CurrentUser.User.Id, false);
+            await UserManager.SetTwoFactorEnabledAsync((int)CurrentUser.User.Id, false);
             var user = CurrentUser.User;
             if (user != null)
             {
@@ -151,7 +151,7 @@ namespace Xo.Areas.Identity.Controllers
         // GET: /Manage/VerifyPhoneNumber
         public async Task<ActionResult> VerifyPhoneNumber(string phoneNumber)
         {
-            var code = await UserManager.GenerateChangePhoneNumberTokenAsync(CurrentUser.User.Id, phoneNumber);
+            var code = await UserManager.GenerateChangePhoneNumberTokenAsync((int)CurrentUser.User.Id, phoneNumber);
             // Send an SMS through the SMS provider to verify the phone number
             return phoneNumber == null ? View("Error") : View(new VerifyPhoneNumberViewModel { PhoneNumber = phoneNumber });
         }
@@ -166,7 +166,7 @@ namespace Xo.Areas.Identity.Controllers
             {
                 return View(model);
             }
-            var result = await UserManager.ChangePhoneNumberAsync(CurrentUser.User.Id, model.PhoneNumber, model.Code);
+            var result = await UserManager.ChangePhoneNumberAsync((int)CurrentUser.User.Id, model.PhoneNumber, model.Code);
             if (result.Succeeded)
             {
                 var user = CurrentUser.User;
@@ -185,7 +185,7 @@ namespace Xo.Areas.Identity.Controllers
         // GET: /Manage/RemovePhoneNumber
         public async Task<ActionResult> RemovePhoneNumber()
         {
-            var result = await UserManager.SetPhoneNumberAsync(CurrentUser.User.Id, null);
+            var result = await UserManager.SetPhoneNumberAsync((int)CurrentUser.User.Id, null);
             if (!result.Succeeded)
             {
                 return RedirectToAction("Index", new { Message = ManageMessageId.Error });
@@ -215,7 +215,7 @@ namespace Xo.Areas.Identity.Controllers
             {
                 return View(model);
             }
-            var result = await UserManager.ChangePasswordAsync(CurrentUser.User.Id, model.OldPassword, model.NewPassword);
+            var result = await UserManager.ChangePasswordAsync((int)CurrentUser.User.Id, model.OldPassword, model.NewPassword);
             if (result.Succeeded)
             {
                 var user = CurrentUser.User;
@@ -244,7 +244,7 @@ namespace Xo.Areas.Identity.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await UserManager.AddPasswordAsync(CurrentUser.User.Id, model.NewPassword);
+                var result = await UserManager.AddPasswordAsync((int)CurrentUser.User.Id, model.NewPassword);
                 if (result.Succeeded)
                 {
                     var user = CurrentUser.User;
@@ -270,7 +270,7 @@ namespace Xo.Areas.Identity.Controllers
             {
                 return View("Error");
             }
-            var userLogins = await UserManager.GetLoginsAsync(CurrentUser.User.Id);
+            var userLogins = await UserManager.GetLoginsAsync((int)CurrentUser.User.Id);
             var otherLogins = AuthenticationManager.GetExternalAuthenticationTypes().Where(auth => userLogins.All(ul => auth.AuthenticationType != ul.LoginProvider)).ToList();
             ViewBag.ShowRemoveButton = user.PasswordHash != null || userLogins.Count > 1;
 
@@ -298,12 +298,12 @@ namespace Xo.Areas.Identity.Controllers
         // GET: /Manage/LinkLoginCallback
         public async Task<ActionResult> LinkLoginCallback()
         {
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, CurrentUser.User.Id);
+            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, (int)CurrentUser.User.Id);
             if (loginInfo == null)
             {
                 return RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
             }
-            var result = await UserManager.AddLoginAsync(CurrentUser.User.Id, loginInfo.Login);
+            var result = await UserManager.AddLoginAsync((int)CurrentUser.User.Id, loginInfo.Login);
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
         }
 
@@ -328,7 +328,7 @@ namespace Xo.Areas.Identity.Controllers
 
         private bool HasPassword()
         {
-            var user = UserManager.FindById(CurrentUser.User.Id);
+            var user = UserManager.FindById((int)CurrentUser.User.Id);
             if (user != null)
             {
                 return user.PasswordHash != null;
@@ -338,7 +338,7 @@ namespace Xo.Areas.Identity.Controllers
 
         private bool HasPhoneNumber()
         {
-            var user = UserManager.FindById(CurrentUser.User.Id);
+            var user = UserManager.FindById((int)CurrentUser.User.Id);
             if (user != null)
             {
                 return user.PhoneNumber != null;

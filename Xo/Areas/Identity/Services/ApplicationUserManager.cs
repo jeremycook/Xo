@@ -10,12 +10,12 @@ using Xo.Areas.Identity.Domain;
 namespace Xo.Areas.Identity.Services
 {
     // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
-    public class ApplicationUserManager : UserManager<User, Guid>
+    public class ApplicationUserManager : UserManager<User, int>
     {
         /// <remarks>
         /// Private because I don't want to accidentally use this instead of the Create method.
         /// </remarks>
-        private ApplicationUserManager(IUserStore<User, Guid> store)
+        private ApplicationUserManager(IUserStore<User, int> store)
             : base(store)
         {
         }
@@ -25,7 +25,7 @@ namespace Xo.Areas.Identity.Services
             var manager = new ApplicationUserManager(new UserStore(context.Get<IdentityDbContext>()));
 
             // Configure validation logic for usernames
-            manager.UserValidator = new UserValidator<User, Guid>(manager)
+            manager.UserValidator = new UserValidator<User, int>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
@@ -48,11 +48,11 @@ namespace Xo.Areas.Identity.Services
 
             // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
             // You can write your own provider and plug it in here.
-            manager.RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<User, Guid>
+            manager.RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<User, int>
             {
                 MessageFormat = "Your security code is {0}"
             });
-            manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<User, Guid>
+            manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<User, int>
             {
                 Subject = "Security Code",
                 BodyFormat = "Your security code is {0}"
@@ -66,7 +66,7 @@ namespace Xo.Areas.Identity.Services
             {
                 // Using the purpose "ASP.NET Identity" for now because I'm not sure
                 // if that same purpose is used elsewhere by other code.
-                manager.UserTokenProvider = new DataProtectorTokenProvider<User, Guid>(
+                manager.UserTokenProvider = new DataProtectorTokenProvider<User, int>(
                     dataProtectionProvider.Create("ASP.NET Identity"));
             }
 

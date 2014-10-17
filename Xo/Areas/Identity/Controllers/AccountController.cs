@@ -81,7 +81,7 @@ namespace Xo.Areas.Identity.Controllers
             var user = await UserManager.FindByIdAsync(await SignInManager.GetVerifiedUserIdAsync());
             if (user != null)
             {
-                var code = await UserManager.GenerateTwoFactorTokenAsync(user.Id, provider);
+                var code = await UserManager.GenerateTwoFactorTokenAsync((int)user.Id, provider);
             }
             return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
@@ -157,13 +157,13 @@ namespace Xo.Areas.Identity.Controllers
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
-        public async Task<ActionResult> ConfirmEmail(Guid? userId, string code)
+        public async Task<ActionResult> ConfirmEmail(UserId? userId, string code)
         {
             if (userId == null || code == null)
             {
                 return View("Error");
             }
-            var result = await UserManager.ConfirmEmailAsync(userId.Value, code);
+            var result = await UserManager.ConfirmEmailAsync((int)userId.Value, code);
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
@@ -185,7 +185,7 @@ namespace Xo.Areas.Identity.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                if (user == null || !(await UserManager.IsEmailConfirmedAsync((int)user.Id)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
@@ -236,7 +236,7 @@ namespace Xo.Areas.Identity.Controllers
                 // Don't reveal that the user does not exist
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
-            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+            var result = await UserManager.ResetPasswordAsync((int)user.Id, model.Code, model.Password);
             if (result.Succeeded)
             {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
@@ -269,8 +269,8 @@ namespace Xo.Areas.Identity.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
-            Guid userId = await SignInManager.GetVerifiedUserIdAsync();
-            if (userId == Guid.Empty)
+            int userId = await SignInManager.GetVerifiedUserIdAsync();
+            if (userId == 0)
             {
                 return View("Error");
             }
@@ -353,7 +353,7 @@ namespace Xo.Areas.Identity.Controllers
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
-                    result = await UserManager.AddLoginAsync(user.Id, info.Login);
+                    result = await UserManager.AddLoginAsync((int)user.Id, info.Login);
                     if (result.Succeeded)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
@@ -413,7 +413,7 @@ namespace Xo.Areas.Identity.Controllers
             {
             }
 
-            public ChallengeResult(string provider, string redirectUri, Guid? userId)
+            public ChallengeResult(string provider, string redirectUri, UserId? userId)
             {
                 LoginProvider = provider;
                 RedirectUri = redirectUri;
@@ -422,7 +422,7 @@ namespace Xo.Areas.Identity.Controllers
 
             public string LoginProvider { get; set; }
             public string RedirectUri { get; set; }
-            public Guid? UserId { get; set; }
+            public UserId? UserId { get; set; }
 
             public override void ExecuteResult(ControllerContext context)
             {

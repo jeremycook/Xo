@@ -12,7 +12,7 @@ namespace Xo.Areas.Identity.Domain
     {
         [Obsolete("Runtime use only.", error: true)]
         public UserClaim() { }
-        public UserClaim(Guid userId, string claimType, string claimValue)
+        public UserClaim(UserId userId, string claimType, string claimValue)
         {
             this.UserId = userId;
             this.Type = claimType;
@@ -21,7 +21,7 @@ namespace Xo.Areas.Identity.Domain
 
         [Key, Column(Order = 1)]
         [Required]
-        public Guid UserId { get; private set; }
+        public UserId UserId { get; private set; }
         public virtual User User { get; private set; }
 
         [Key, Column(Order = 2)]

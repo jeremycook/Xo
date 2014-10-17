@@ -12,7 +12,7 @@ namespace Xo.Areas.Identity.Domain
         [Obsolete("Runtime use only.", error: true)]
         public UserLogin() { }
 
-        public UserLogin(Guid userId, string loginProvider, string providerKey)
+        public UserLogin(UserId userId, string loginProvider, string providerKey)
         {
             this.UserId = userId;
             this.LoginProvider = loginProvider;
@@ -21,7 +21,7 @@ namespace Xo.Areas.Identity.Domain
 
         [Key, Column(Order = 1)]
         [Required]
-        public Guid UserId { get; private set; }
+        public UserId UserId { get; private set; }
 
         [Key, Column(Order = 2)]
         [Required]
