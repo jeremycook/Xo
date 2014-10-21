@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Xo.Areas.Identity.Domain
 {
-    public abstract class UserBase : IUser<Guid>
+    public abstract class Identity : IUser<Guid>
     {
         public virtual Guid Id { get; protected set; }
         public virtual string UserName { get; protected set; }

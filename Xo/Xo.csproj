@@ -178,7 +178,7 @@
     <Compile Include="Areas\Identity\Models\ManageViewModels.cs" />
     <Compile Include="Areas\Identity\Domain\UserLogin.cs" />
     <Compile Include="Areas\Identity\Domain\User.cs" />
-    <Compile Include="Areas\Identity\Domain\UserBase.cs" />
+    <Compile Include="Areas\Identity\Domain\Identity.cs" />
     <Compile Include="Areas\Identity\Services\ApplicationRoleManager.cs" />
     <Compile Include="Areas\Identity\Services\ApplicationSignInManager.cs" />
     <Compile Include="Areas\Identity\Services\ApplicationUserManager.cs" />
