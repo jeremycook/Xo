@@ -201,7 +201,6 @@
     <Compile Include="Areas\Infrastructure\ControllerConvention.cs" />
     <Compile Include="Areas\Identity\Models\CurrentUser.cs" />
     <Compile Include="Areas\Identity\Models\ICurrentUser.cs" />
-    <Compile Include="Infrastructure\SeedData.cs" />
     <Compile Include="Areas\Infrastructure\ModelMetadata\ExtensibleModelMetadataProvider.cs" />
     <Compile Include="Areas\Infrastructure\ModelMetadata\Filters\TextAreaByNameFilter.cs" />
     <Compile Include="Areas\Infrastructure\ModelMetadata\Filters\LabelConventionFilter.cs" />
