@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Xo.Infrastructure.ModelMetadata
+namespace Xo.Areas.Infrastructure.ModelMetadata
 {
     public interface IModelMetadataFilter
     {

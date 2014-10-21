@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Xo.Infrastructure
+namespace Xo.Areas.Infrastructure
 {
     public class ControllerRegistry : Registry
     {

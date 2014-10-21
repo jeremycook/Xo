@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Xo.Infrastructure.Alerts
+namespace Xo.Areas.Infrastructure.Alerts
 {
     public class Alert
     {

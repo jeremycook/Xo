@@ -11,7 +11,7 @@ using System.Web;
 using Xo.Areas.Identity.Domain;
 using Xo.Areas.Identity.Services;
 
-namespace Xo.Infrastructure
+namespace Xo.Areas.Infrastructure
 {
     public class StandardRegistry : Registry
     {

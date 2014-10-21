@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Xo.Infrastructure.Tasks
+namespace Xo.Areas.Infrastructure.Tasks
 {
     public class TaskRegistry : Registry
     {

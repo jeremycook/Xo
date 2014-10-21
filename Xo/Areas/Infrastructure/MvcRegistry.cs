@@ -10,7 +10,7 @@ using System.Web;
 using System.Web.Optimization;
 using System.Web.Routing;
 
-namespace Xo.Infrastructure
+namespace Xo.Areas.Infrastructure
 {
     public class MvcRegistry : Registry
     {

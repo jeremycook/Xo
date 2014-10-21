@@ -4,9 +4,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using Xo.Infrastructure;
-using Xo.Infrastructure.ModelMetadata;
-using Xo.Infrastructure.Tasks;
+using Xo.Areas.Infrastructure;
+using Xo.Areas.Infrastructure.ModelMetadata;
+using Xo.Areas.Infrastructure.Tasks;
 
 namespace Xo
 {

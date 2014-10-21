@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 
-namespace Xo.Infrastructure.ModelMetadata
+namespace Xo.Areas.Infrastructure.ModelMetadata
 {
     public class ExtensibleModelMetadataProvider : DataAnnotationsModelMetadataProvider
     {

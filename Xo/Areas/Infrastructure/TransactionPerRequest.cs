@@ -5,9 +5,9 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using Xo.Areas.Identity.Domain;
-using Xo.Infrastructure.Tasks;
+using Xo.Areas.Infrastructure.Tasks;
 
-namespace Xo.Infrastructure
+namespace Xo.Areas.Infrastructure
 {
     public class TransactionPerRequest : IRunOnEachRequest, IRunOnError, IRunAfterEachRequest
     {

@@ -2,7 +2,7 @@
 using StructureMap.Graph;
 using System.Web.Mvc;
 
-namespace Xo.Infrastructure.ModelMetadata
+namespace Xo.Areas.Infrastructure.ModelMetadata
 {
     public class ModelMetadataRegistry : Registry
     {

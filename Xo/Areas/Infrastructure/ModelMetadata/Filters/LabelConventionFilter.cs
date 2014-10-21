@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Xo.Infrastructure.ModelMetadata.Filters
+namespace Xo.Areas.Infrastructure.ModelMetadata.Filters
 {
     public class LabelConventionFilter : IModelMetadataFilter
     {

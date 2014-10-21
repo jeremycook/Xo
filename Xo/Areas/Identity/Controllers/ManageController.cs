@@ -9,8 +9,8 @@ using System.Web.Mvc;
 using Xo.Areas.Identity.Domain;
 using Xo.Areas.Identity.Models;
 using Xo.Areas.Identity.Services;
-using Xo.Infrastructure;
-using Xo.Infrastructure.Alerts;
+using Xo.Areas.Infrastructure;
+using Xo.Areas.Infrastructure.Alerts;
 
 namespace Xo.Areas.Identity.Controllers
 {
