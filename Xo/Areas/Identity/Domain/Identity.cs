@@ -11,6 +11,8 @@ namespace Xo.Areas.Identity.Domain
         public virtual Guid Id { get; protected set; }
         public virtual string UserName { get; protected set; }
 
+        //// IUser
+
         Guid IUser<Guid>.Id
         {
             get { return Id; }
@@ -20,6 +22,13 @@ namespace Xo.Areas.Identity.Domain
         {
             get { return UserName; }
             set { UserName = value; }
+        }
+
+        //// Etc.
+
+        public override string ToString()
+        {
+            return UserName;
         }
     }
 }

@@ -168,6 +168,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Identity\Controllers\AccountController.cs" />
     <Compile Include="Areas\Identity\Controllers\ManageController.cs" />
+    <Compile Include="Areas\Identity\Domain\SystemAccount.cs" />
     <Compile Include="Areas\Identity\Helpers\IdentityExtensions.cs" />
     <Compile Include="Areas\Identity\Models\AccountViewModels.cs" />
     <Compile Include="Areas\Identity\Domain\RoleId.cs" />
