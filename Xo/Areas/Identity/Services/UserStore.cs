@@ -11,16 +11,16 @@ using Xo.Areas.Identity.Domain;
 namespace Xo.Areas.Identity.Services
 {
     public class UserStore :
-        IUserStore<User, int>,
-        IUserPasswordStore<User, int>,
-        IUserEmailStore<User, int>,
-        IUserPhoneNumberStore<User, int>,
-        IUserTwoFactorStore<User, int>,
-        IUserLoginStore<User, int>,
-        IUserLockoutStore<User, int>,
-        IUserSecurityStampStore<User, int>,
-        IUserRoleStore<User, int>,
-        IUserClaimStore<User, int>
+        IUserStore<User, Guid>,
+        IUserPasswordStore<User, Guid>,
+        IUserEmailStore<User, Guid>,
+        IUserPhoneNumberStore<User, Guid>,
+        IUserTwoFactorStore<User, Guid>,
+        IUserLoginStore<User, Guid>,
+        IUserLockoutStore<User, Guid>,
+        IUserSecurityStampStore<User, Guid>,
+        IUserRoleStore<User, Guid>,
+        IUserClaimStore<User, Guid>
     {
         private readonly IdentityDbContext Db;
 
@@ -58,9 +58,14 @@ namespace Xo.Areas.Identity.Services
             await Db.SaveChangesAsync();
         }
 
-        public async Task<User> FindByIdAsync(int userId)
+        public async Task<User> FindByIdAsync(Guid userId)
         {
-            return await Db.Users.SingleOrDefaultAsync(o => o.Id == (UserId)userId);
+            if (userId == null)
+            {
+                throw new ArgumentNullException("userId");
+            }
+
+            return await Db.Users.SingleOrDefaultAsync(o => o.Id == userId);
         }
 
         public async Task<User> FindByNameAsync(string userName)

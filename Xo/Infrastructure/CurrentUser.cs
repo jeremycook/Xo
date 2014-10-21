@@ -27,7 +27,7 @@ namespace Xo.Infrastructure
             {
                 if (_user == null)
                 {
-                    var userId = (UserId)Xo.Areas.Identity.IdentityExtensions.GetUserId(Identity);
+                    var userId = Xo.Areas.Identity.IdentityExtensions.GetUserId(Identity);
                     _user = Db.Users.SingleOrDefault(o => o.Id == userId);
                 }
 

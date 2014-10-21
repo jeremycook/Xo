@@ -12,7 +12,7 @@ using Xo.Areas.Identity.Domain;
 namespace Xo.Areas.Identity.Services
 {
     // Configure the application sign-in manager which is used in this application.
-    public class ApplicationSignInManager : SignInManager<User, int>
+    public class ApplicationSignInManager : SignInManager<User, Guid>
     {
         /// <remarks>
         /// Private because I don't want to accidentally use this instead of the Create method.
@@ -27,9 +27,9 @@ namespace Xo.Areas.Identity.Services
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
 
-        public override int ConvertIdFromString(string id)
+        public override Guid ConvertIdFromString(string id)
         {
-            return string.IsNullOrEmpty(id) ? 0 : int.Parse(id);
+            return string.IsNullOrEmpty(id) ? Guid.Empty : Guid.Parse(id);
         }
     }
 }

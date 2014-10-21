@@ -1,24 +1,22 @@
 ﻿using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 
 namespace Xo.Areas.Identity.Domain
 {
-    public abstract class UserBase : IUser<int>
+    public abstract class UserBase : IUser<Guid>
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public virtual UserId Id { get; protected set; }
+        public virtual Guid Id { get; protected set; }
         public virtual string UserName { get; protected set; }
 
-        int IUser<int>.Id
+        Guid IUser<Guid>.Id
         {
-            get { return (int)Id; }
+            get { return Id; }
         }
 
-        string IUser<int>.UserName
+        string IUser<Guid>.UserName
         {
             get { return UserName; }
             set { UserName = value; }
