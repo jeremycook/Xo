@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Xo.Areas.Identity.Domain;
 
-namespace Xo.Infrastructure
+namespace Xo.Areas.Identity.Models
 {
     public class CurrentUser : ICurrentUser
     {

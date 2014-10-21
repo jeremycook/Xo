@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xo.Areas.Identity.Domain;
 
-namespace Xo.Infrastructure
+namespace Xo.Areas.Identity.Models
 {
     public interface ICurrentUser
     {

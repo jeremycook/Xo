@@ -199,8 +199,8 @@
     <Compile Include="Infrastructure\Alerts\AlertDecoratorResult.cs" />
     <Compile Include="Infrastructure\Alerts\AlertHelpers.cs" />
     <Compile Include="Infrastructure\ControllerConvention.cs" />
-    <Compile Include="Infrastructure\CurrentUser.cs" />
-    <Compile Include="Infrastructure\ICurrentUser.cs" />
+    <Compile Include="Areas\Identity\Models\CurrentUser.cs" />
+    <Compile Include="Areas\Identity\Models\ICurrentUser.cs" />
     <Compile Include="Infrastructure\ModelMetadata\ExtensibleModelMetadataProvider.cs" />
     <Compile Include="Infrastructure\ModelMetadata\Filters\TextAreaByNameFilter.cs" />
     <Compile Include="Infrastructure\ModelMetadata\Filters\LabelConventionFilter.cs" />
