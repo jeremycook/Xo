@@ -1,4 +1,6 @@
 ﻿using StructureMap;
+using StructureMap.Configuration.DSL;
+using StructureMap.Graph;
 using System;
 using System.Web;
 using System.Web.Mvc;
@@ -18,12 +20,12 @@ namespace Xo
         {
             _LazyAppContainer = new Lazy<Container>(() => new Container(cfg =>
             {
-                cfg.AddRegistry(new StandardRegistry());
-                cfg.AddRegistry(new ControllerRegistry());
-                cfg.AddRegistry(new ActionFilterRegistry(() => Container ?? AppContainer));
-                cfg.AddRegistry(new MvcRegistry());
-                cfg.AddRegistry(new TaskRegistry());
-                cfg.AddRegistry(new ModelMetadataRegistry());
+                cfg.For<Func<IContainer>>().Use(() => (Func<IContainer>)(() => Container ?? AppContainer));
+                cfg.Scan(scan =>
+                {
+                    scan.TheCallingAssembly();
+                    scan.LookForRegistries();
+                });
             }));
         }
 
