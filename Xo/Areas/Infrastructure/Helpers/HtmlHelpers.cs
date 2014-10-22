@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 
-namespace Xo.Helpers
+namespace Xo.Areas.Infrastructure.Helpers
 {
     public static class HtmlHelpers
     {
