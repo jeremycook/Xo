@@ -9,8 +9,7 @@ namespace Xo.Areas.Identity.Domain
     {
         static IdentityDbContext()
         {
-            Database.SetInitializer<IdentityDbContext>(
-                new DropCreateDatabaseIfModelChanges<IdentityDbContext>());
+            Database.SetInitializer<IdentityDbContext>(null);
         }
 
         public static IdentityDbContext Create()
