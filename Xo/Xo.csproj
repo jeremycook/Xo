@@ -187,6 +187,7 @@
     <Compile Include="Areas\Identity\Services\RoleStore.cs" />
     <Compile Include="Areas\Identity\Services\SmsService.cs" />
     <Compile Include="Areas\Identity\Services\UserStore.cs" />
+    <Compile Include="Areas\Identity\IdentityRegistry.cs" />
     <Compile Include="Areas\Identity\Startup.ConfigureIdentity.cs" />
     <Compile Include="Areas\Identity\Security\AuthorizeRolesAttribute.cs" />
     <Compile Include="Controllers\HomeController.cs" />
