@@ -9,11 +9,16 @@ using Xo.Areas.Infrastructure.Tasks;
 
 namespace Xo.Areas.Infrastructure
 {
-    public class TransactionPerRequest : IRunOnEachRequest, IRunOnError, IRunAfterEachRequest
+    /// <summary>
+    /// Implement the transaction per HTTP request pattern for your <typeparamref name="TDbContext"/> of choice.
+    /// </summary>
+    /// <typeparam name="TDbContext"></typeparam>
+    public abstract class TransactionPerRequest<TDbContext> : IRunOnEachRequest, IRunOnError, IRunAfterEachRequest
+        where TDbContext : DbContext
     {
-        private readonly IdentityDbContext Db;
+        private readonly TDbContext Db;
         private readonly HttpContextBase HttpContext;
-        public TransactionPerRequest(IdentityDbContext db, HttpContextBase httpContext)
+        public TransactionPerRequest(TDbContext db, HttpContextBase httpContext)
         {
             Db = db;
             HttpContext = httpContext;
