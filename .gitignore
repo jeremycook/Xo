@@ -159,3 +159,4 @@ $RECYCLE.BIN/
 packages/
 */App_Data/*.mdf
 */App_Data/*.ldf
+ignore/
