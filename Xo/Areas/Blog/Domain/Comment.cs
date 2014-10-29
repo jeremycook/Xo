@@ -25,6 +25,6 @@ namespace Xo.Areas.Blog.Domain
         public DateTime? Posted { get; private set; }
 
         public Guid PostedById { get; private set; }
-        public Identity.Domain.Identity PostedBy { get; private set; }
+        public Users.Domain.User PostedBy { get; private set; }
     }
 }

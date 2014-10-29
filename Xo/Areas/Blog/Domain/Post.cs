@@ -35,7 +35,7 @@ namespace Xo.Areas.Blog.Domain
         [Display(Name = "Author")]
         public Guid? AuthorId { get; set; }
         [ScaffoldColumn(false)]
-        public virtual Identity.Domain.Identity Author { get; private set; }
+        public virtual Users.Domain.User Author { get; private set; }
 
         [Required]
         public PostStatus? Status { get; set; }

@@ -8,8 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
-using Xo.Areas.Identity.Domain;
-using Xo.Areas.Identity.Services;
+using Xo.Areas.Users.Domain;
+using Xo.Areas.Users.Services;
 
 namespace Xo.Areas.Infrastructure
 {

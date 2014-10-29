@@ -9,7 +9,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Xo.Areas.Blog.Domain;
-using Xo.Areas.Identity.Models;
+using Xo.Areas.Users.Models;
 using Xo.Areas.Infrastructure.Alerts;
 
 namespace Xo.Areas.Blog.Controllers
