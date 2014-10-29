@@ -1,0 +1,144 @@
+﻿<#@ template language="C#" HostSpecific="True" #>
+<#@ output extension=".cshtml" #>
+<#@ include file="Imports.include.t4" #>
+@model IEnumerable<#= "<" + ViewDataTypeName + ">" #>
+<#
+// The following chained if-statement outputs the file header code and markup for a partial view, a view using a layout page, or a regular view.
+if(IsPartialView) {
+#>
+<#
+} else if(IsLayoutPageSelected) {
+#>
+@{
+    Page.Title = "<#=PluralViewDataTypeShortName#>";
+<#
+if (!String.IsNullOrEmpty(LayoutPageFile)) {
+#>
+    Layout = "<#= LayoutPageFile#>";
+<#
+}
+#>
+}
+
+@Html.Partial("_SubNav", new SubNav { Brand = "<#=PluralViewDataTypeShortName#>" })
+
+<h1><#=PluralViewDataTypeShortName#></h1>
+
+<#
+} else {
+#>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title><#= ViewName #></title>
+</head>
+<body>
+<#
+    PushIndent("    ");
+}
+#>
+<table class="table">
+    <thead>
+        <tr>
+<#
+IEnumerable<PropertyMetadata> properties = ModelMetadata.Properties;
+foreach (PropertyMetadata property in properties) {
+    if (property.Scaffold && !property.IsPrimaryKey && !property.IsForeignKey) {
+#>
+<#
+        // This is a temporary work around until core scaffolding provides support for independent associations.
+        if (property.IsAssociation && GetRelatedModelMetadata(property) == null) {
+            continue;
+        }
+#>
+            <th>@Html.DisplayNameFor(m => m.<#= GetValueExpression(property) #>)</th>
+<#
+    }
+}
+#>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+<#
+string pkName = GetPrimaryKeyName() ?? "/* Primary key */";
+var firstColumn = true;
+foreach (PropertyMetadata property in properties) {
+    if (property.Scaffold && !property.IsPrimaryKey && !property.IsForeignKey) {
+#>
+<#
+        // This is a temporary work around until core scaffolding provides support for independent associations.
+        if (property.IsAssociation && GetRelatedModelMetadata(property) == null) {
+            continue;
+        }
+		if (firstColumn) {
+#>
+                <td>
+                    <a href="@Url.Action("Details", new { item.<#= pkName #> })">@Html.DisplayFor(_ => <#= "item." + GetValueExpression(property) #>)</a>
+                </td>
+<#
+			firstColumn = false;
+		}
+		else {
+#>
+                <td>@Html.DisplayFor(_ => <#= "item." + GetValueExpression(property) #>)</td>
+<#
+		}
+    }
+}
+
+if (pkName != null) {
+#>
+                <td class="td-actions">
+                    <div class="btn-group btn-group-xs">
+                        <a href="@Url.Action("Details", new { item.<#= pkName #> })" class="btn btn-default">View</a>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="@Url.Action("Edit", new { item.<#= pkName #> })">Edit</a></li>
+                            <li><a href="@Url.Action("Delete", new { item.<#= pkName #> })">Delete</a></li>
+                        </ul>
+                    </div>
+                </td>
+<#
+} else {
+#>
+                <td>
+                    <div class="btn-group">
+                        <a href="@Url.Action("Details", new { /* item.PrimaryKey */ })" class="btn btn-link">View</a>
+                        <a href="@Url.Action("Edit", new { /* item.PrimaryKey */ })" class="btn btn-link">Edit</a>
+                    </div>
+                </td>
+<#
+}
+#>
+            </tr>
+        }
+    <tbody>
+</table>
+<#
+// The following code closes the tag used in the case of a view using a layout page and the body and html tags in the case of a regular view page
+#>
+<#
+if(!IsPartialView && !IsLayoutPageSelected) {
+    ClearIndent();
+#>
+</body>
+</html>
+<#
+}
+#>
+<#@ include file="ModelMetadataFunctions.cs.include.t4" #>

@@ -190,6 +190,10 @@
     <Compile Include="Areas\Identity\IdentityRegistry.cs" />
     <Compile Include="Areas\Identity\Startup.ConfigureIdentity.cs" />
     <Compile Include="Areas\Identity\Security\AuthorizeRolesAttribute.cs" />
+    <Compile Include="Areas\Infrastructure\ModelMetadata\Filters\ForiegnKeyByNameFilter.cs" />
+    <Compile Include="Areas\Infrastructure\ModelMetadata\Filters\PrimaryKeyByNameFilter.cs" />
+    <Compile Include="Areas\Infrastructure\ModelMetadata\Filters\EnumDataTypeFilter.cs" />
+    <Compile Include="Areas\Infrastructure\Models\SubNav.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -224,6 +228,22 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Views\Shared\_SubNav.cshtml" />
+    <None Include="CodeTemplates\MvcArea\Area.cs.t4" />
+    <None Include="CodeTemplates\MvcArea\web.cs.t4" />
+    <None Include="CodeTemplates\MvcControllerEmpty\Controller.cs.t4" />
+    <None Include="CodeTemplates\MvcControllerWithActions\Controller.cs.t4" />
+    <None Include="CodeTemplates\MvcControllerWithContext\Controller.cs.t4" />
+    <None Include="CodeTemplates\MvcViewWithoutModel\Empty.cs.t4" />
+    <None Include="CodeTemplates\MvcViewWithoutModel\Imports.include.t4" />
+    <None Include="CodeTemplates\MvcView\Create.cs.t4" />
+    <None Include="CodeTemplates\MvcView\Delete.cs.t4" />
+    <None Include="CodeTemplates\MvcView\Details.cs.t4" />
+    <None Include="CodeTemplates\MvcView\Edit.cs.t4" />
+    <None Include="CodeTemplates\MvcView\Empty.cs.t4" />
+    <None Include="CodeTemplates\MvcView\Imports.include.t4" />
+    <None Include="CodeTemplates\MvcView\List.cs.t4" />
+    <None Include="CodeTemplates\MvcView\ModelMetadataFunctions.cs.include.t4" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
@@ -283,7 +303,9 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\Shared\_Alerts.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\EmailAddress.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\MultilineText.cshtml" />
@@ -292,6 +314,10 @@
     <Content Include="Views\Shared\EditorTemplates\String.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ReadOnly.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Object.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\XoLabel.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Enum.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

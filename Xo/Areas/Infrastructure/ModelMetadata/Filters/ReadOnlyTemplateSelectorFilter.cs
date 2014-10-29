@@ -16,8 +16,8 @@ namespace Xo.Areas.Infrastructure.ModelMetadata.Filters
                     metadata.TemplateHint = "ReadOnly" + metadata.ModelType.Name;
                 }
 
-                // Fallback to a template named "ReadOnly" if DataTypeName is
-                // not already set.
+                // Fallback to a catch-all template named "ReadOnly" if a template
+                // matching TemplateHint is not found.
                 if (string.IsNullOrEmpty(metadata.DataTypeName))
                 {
                     metadata.DataTypeName = "ReadOnly";

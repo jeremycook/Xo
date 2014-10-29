@@ -1,8 +1,1 @@
-﻿@{
-    var htmlAttributes = new RouteValueDictionary(new { @class = "multiline-text form-control", rows = 5 });
-    if (ViewData.ModelMetadata.IsRequired)
-    {
-        htmlAttributes.Add("aria-required", true);
-    }
-}
-@Html.TextArea("", Convert.ToString(ViewData.TemplateInfo.FormattedModelValue), htmlAttributes)
+﻿@Html.TextArea("", Convert.ToString(ViewData.TemplateInfo.FormattedModelValue), htmlAttributes: new { @class = "multiline-text-editor form-control", rows = 5 })

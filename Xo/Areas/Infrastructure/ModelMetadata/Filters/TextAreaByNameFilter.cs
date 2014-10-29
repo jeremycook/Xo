@@ -26,7 +26,7 @@ namespace Xo.Areas.Infrastructure.ModelMetadata.Filters
 
         public void TransformMetadata(System.Web.Mvc.ModelMetadata metadata, IEnumerable<Attribute> attributes)
         {
-            if (!string.IsNullOrEmpty(metadata.PropertyName) &&
+            if (!string.IsNullOrEmpty(metadata.PropertyName) && metadata.ModelType == typeof(string) &&
                 string.IsNullOrEmpty(metadata.DataTypeName) &&
                 TextAreaFieldNames.Contains(metadata.PropertyName))
             {

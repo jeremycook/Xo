@@ -1,8 +1,1 @@
-﻿@{
-    var htmlAttributes = new RouteValueDictionary(new { @class = "email-address form-control", type = "email" });
-    if (ViewData.ModelMetadata.IsRequired)
-    {
-        htmlAttributes.Add("aria-required", true);
-    }
-}
-@Html.TextBox("", ViewData.TemplateInfo.FormattedModelValue, htmlAttributes)
+﻿@Html.TextBox("", ViewData.TemplateInfo.FormattedModelValue, htmlAttributes: new { @class = "email-address-editor form-control", type = "email" })

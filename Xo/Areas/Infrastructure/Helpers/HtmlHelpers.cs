@@ -25,5 +25,19 @@ namespace Xo.Areas.Infrastructure.Helpers
         {
             return html.Label(propertyName, htmlAttributes: new { @class = columnClass + " control-label" });
         }
+
+        public static IHtmlString XoLabelFor<TModel, TProp>(
+            this HtmlHelper<TModel> html,
+            Expression<Func<TModel, TProp>> expression)
+        {
+            return html.EditorFor(expression, templateName: "XoLabel");
+        }
+
+        public static IHtmlString XoLabel(
+            this HtmlHelper html,
+            string propertyName)
+        {
+            return html.Editor(propertyName, templateName: "XoLabel");
+        }
     }
 }

@@ -1,19 +1,37 @@
 ﻿@model dynamic
-
-@foreach (var prop in ViewData.ModelMetadata.Properties.Where(p => p.ShowForEdit))
-{
-    if (prop.TemplateHint == "HiddenInput")
+<div class="object-editor">
+    @foreach (var prop in ViewData.ModelMetadata.Properties.Where(p => p.ShowForEdit))
     {
-        @Html.Hidden(prop.PropertyName)
-    }
-    else
-    {
-        <div class="form-group">
-            @Html.BootstrapLabel(prop.PropertyName)
-            <div class="col-md-10">
-                @Html.Editor(prop.PropertyName)
-                @Html.ValidationMessage(prop.PropertyName)
+        if (prop.TemplateHint == "HiddenInput")
+        {
+            @Html.Hidden(prop.PropertyName)
+        }
+        else
+        {
+            <div class="form-group">
+                @Html.XoLabel(prop.PropertyName)
+                @try
+                {
+                    <div class="col-sm-5">
+                        @Html.Editor(prop.PropertyName)
+                    </div>
+                    <div class="col-sm-5">
+                        @Html.ValidationMessage(prop.PropertyName)
+                    </div>
+                }
+                catch (InvalidOperationException ex)
+                {
+                    if (ex.Message == "Stack empty.")
+                    {
+                        throw new InvalidOperationException("No EditorTemplate found for '{0}'. Consider adding an EditorTemplate for '{1}'; DataTypeName: {2}; TemplateHint: {3}"
+                            .FormatWith(ViewData.TemplateInfo.HtmlFieldPrefix, prop.ModelType, prop.DataTypeName, prop.TemplateHint));
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
             </div>
-        </div>
+        }
     }
-}
+</div>

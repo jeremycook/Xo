@@ -1,0 +1,35 @@
+﻿@model Xo.Areas.Infrastructure.Models.SubNav
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#section-navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="@Url.Action("Index")">@Model.Brand</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="section-navbar-collapse">
+            <ul class="nav navbar-nav navbar-nav-section">
+                <li><a href="@Url.Action("Index")">Manage</a></li>
+                <li><a href="@Url.Action("Create")">Create</a></li>
+            </ul>
+            @if (Model.Route != null)
+            {
+                <ul class="nav navbar-nav navbar-nav-item">
+                    <li><a href="@Url.Action("Details", Model.Route)">View</a></li>
+                    <li><a href="@Url.Action("Edit", Model.Route)">Edit</a></li>
+                    <li><a href="@Url.Action("Delete", Model.Route)">Delete</a></li>
+                </ul>
+            }
+            <form action="@Url.Action("Index")" class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                    <input name="Terms" value="@Html.Value("Terms")" type="text" class="form-control" placeholder="Search @Model.Brand.Pluralize()">
+                </div>
+                <button type="submit" class="btn btn-default">Search</button>
+            </form>
+        </div>
+    </div>
+</nav>

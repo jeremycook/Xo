@@ -1,0 +1,316 @@
+﻿<#@ template language="C#" HostSpecific="True" Debug="True" #>
+<#@ output extension="cs" #>
+<#@ assembly name="System.ComponentModel.DataAnnotations" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Data.Entity" #>
+<#@ assembly name="System.Data.Linq" #>
+<#@ assembly name="EnvDTE" #>
+<#@ ScaffoldingAssembly Processor="ScaffoldingAssemblyLoader" #>
+<#
+var routePrefix = String.Empty;
+if (!String.IsNullOrWhiteSpace(AreaName)) {
+    routePrefix = "/" + AreaName;
+}
+routePrefix += "/" + ControllerRootName + "/";
+#>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="Microsoft.AspNet.Scaffolding.Core.Metadata" #>
+<#@ parameter type="System.String" name="ControllerName" #>
+<#@ parameter type="System.String" name="ControllerRootName" #>
+<#@ parameter type="System.String" name="Namespace" #>
+<#@ parameter type="System.String" name="AreaName" #>
+<#@ parameter type="System.String" name="ContextTypeName" #>
+<#@ parameter type="System.String" name="ModelTypeName" #>
+<#@ parameter type="System.String" name="ModelVariable" #>
+<#@ parameter type="Microsoft.AspNet.Scaffolding.Core.Metadata.ModelMetadata" name="ModelMetadata" #>
+<#@ parameter type="System.Boolean" name="UseAsync" #>
+<#
+    // Intentionally disable this, we're doing something else.
+    //@ parameter type="System.Boolean" name="IsOverpostingProtectionRequired"
+    var IsOverpostingProtectionRequired = false; 
+#>
+<#@ parameter type="System.String" name="BindAttributeIncludeText" #>
+<#@ parameter type="System.String" name ="OverpostingWarningMessage" #>
+<#@ parameter type="System.Collections.Generic.HashSet<System.String>" name="RequiredNamespaces" #>
+using Humanizer;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Linq;
+<# if (UseAsync) { #>
+using System.Threading.Tasks;
+<# } #>
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
+<# foreach (var namespaceName in RequiredNamespaces
+    .Union(new[] {"Xo.Areas.Identity.Models","Xo.Areas.Infrastructure.Alerts"})
+    .OrderBy(ns => ns)) { #>
+using <#= namespaceName #>;
+<# } #>
+
+namespace <#= Namespace #>
+{
+<#
+    var contextTypeName = ContextTypeName;
+    var entitySetName = ModelMetadata.EntitySetName;
+    var entitySetVariable = entitySetName.ToLowerInvariant();
+    var primaryKeyName = ModelMetadata.PrimaryKeys[0].PropertyName;
+    var primaryKeyVariableName = ModelMetadata.PrimaryKeys[0].PropertyName.ToLower();
+    var primaryKeyShortTypeName = ModelMetadata.PrimaryKeys[0].ShortTypeName;
+    var primaryKeyDefaultValue = ModelMetadata.PrimaryKeys[0].DefaultValue;
+    var primaryKeyType = ModelMetadata.PrimaryKeys[0].TypeName;
+    var primaryKeyNullableTypeName = GetNullableTypeName(primaryKeyType, primaryKeyShortTypeName);
+    var lambdaVar = ModelVariable[0];
+    var relatedProperties = ModelMetadata.RelatedEntities.ToDictionary(item => item.AssociationPropertyName);
+    var firstStringPropertyName = ModelMetadata.Properties
+        .Where(o => o.Scaffold && !o.IsReadOnly && o.ShortTypeName.ToLower() == "string")
+        .Select(o => o.PropertyName).FirstOrDefault() ?? "/* Search a field */";
+
+    string bindAttribute;
+    if (IsOverpostingProtectionRequired)
+    {
+        bindAttribute = String.Format("[Bind(Include = \"{0}\")] ", BindAttributeIncludeText);
+    }
+    else
+    {
+        bindAttribute = String.Empty;
+    }
+#>
+    [Authorize]
+    [RouteArea("<#= AreaName #>", AreaPrefix = "<#= AreaName #>")]
+    [RoutePrefix("<#= ControllerRootName #>")]
+    [Route("{Action}/{Id:<#= primaryKeyShortTypeName #>}")]
+    public class <#= ControllerName #> : Controller
+    {
+        private readonly <#= ContextTypeName #> Db;
+        private readonly CurrentUser CurrentUser;
+
+        public <#= ControllerName #>(<#= ContextTypeName #> db, CurrentUser currentUser)
+        {
+            this.Db = db;
+            this.CurrentUser = currentUser;
+        }
+
+
+        [Route("")]
+<# if (UseAsync) { #>
+        public async Task<ActionResult> Index(string terms = null)
+<# } else { #>
+        public ActionResult Index(string terms = null)
+<# } #>
+        {
+<#  var includeExpressions = "";
+        includeExpressions = String.Join("", relatedProperties.Values.Select(property => String.Format(".Include({0} => {0}.{1})", lambdaVar, property.AssociationPropertyName)));
+#>
+<# if(!String.IsNullOrEmpty(includeExpressions)) { #>
+            var <#= entitySetVariable #> = Db.<#= entitySetName #><#= includeExpressions #>
+                .Where(o => terms == null || o.<#=firstStringPropertyName#>.Contains(terms));
+<#		if (UseAsync) { #>
+            return View(await <#= entitySetVariable #>.ToListAsync());
+<#		} else { #>
+            return View(<#= entitySetVariable #>.ToList());
+<#		} #>
+<# } else { #>
+<#		if (UseAsync) { #>
+            return View(await Db.<#= entitySetName #><#= includeExpressions #>.ToListAsync());
+<#		} else { #>
+            return View(Db.<#= entitySetName #><#= includeExpressions #>.ToList());
+<#		} #>
+<# } #>
+        }
+
+
+        [Route("Create")]
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+<# if (IsOverpostingProtectionRequired) {
+    foreach (var line in OverpostingWarningMessage.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)) { 
+#>
+        // <#= line #>
+<# } } #>
+        [Route("Create")]
+        [HttpPost, ValidateAntiForgeryToken]
+<# if (UseAsync) { #>
+        public async Task<ActionResult> Create(<#= bindAttribute #><#= ModelTypeName #> model)
+<# } else { #>
+        public ActionResult Create(<#= bindAttribute #><#= ModelTypeName #> model)
+<# } #>
+        {
+            var <#= ModelVariable #> = new <#= ModelTypeName #>(DateTime.UtcNow, CurrentUser.User.Id);
+<# foreach(var prop in ModelMetadata.Properties.Where(o => o.Scaffold && !o.IsReadOnly)) { #>
+            <#= ModelVariable #>.<#= prop.PropertyName #> = model.<#= prop.PropertyName #>;
+<# } #>
+
+            ModelState.Clear();
+            if (TryValidateModel(<#= ModelVariable #>))
+            {
+<# if(!String.IsNullOrEmpty(primaryKeyType) && String.Equals("System.Guid", primaryKeyType, StringComparison.OrdinalIgnoreCase)) { #>
+                <#= ModelVariable #>.<#= primaryKeyName #> = Guid.NewGuid();
+<# } #>
+                Db.<#= entitySetName #>.Add(<#= ModelVariable #>);
+<# if (UseAsync) {#>
+                await Db.SaveChangesAsync();
+<# } else { #>
+                Db.SaveChanges();
+<# } #>
+
+                return RedirectToAction("Index")
+                    .WithSuccess("Created {0}.".FormatWith(<#= ModelVariable #>));
+            }
+
+            return View(<#= ModelVariable #>);
+        }
+
+
+<# if (UseAsync) { #>
+        public async Task<ActionResult> Details(<#= primaryKeyShortTypeName #> <#= primaryKeyVariableName #>)
+<# } else { #>
+        public ActionResult Details(<#= primaryKeyShortTypeName #> <#= primaryKeyVariableName #>)
+<# } #>
+        {
+<# if (UseAsync) { #>
+            <#= ModelTypeName #> model = await Db.<#= entitySetName #>.SingleOrDefaultAsync(o => o.<#= primaryKeyName #> == <#= primaryKeyVariableName #>);
+<# } else { #>
+            <#= ModelTypeName #> model = Db.<#= entitySetName #>.SingleOrDefault(o => o.<#= primaryKeyName #> == <#= primaryKeyVariableName #>);
+<# } #>
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(model);
+        }
+
+
+<# if (UseAsync) { #>
+        public async Task<ActionResult> Edit(<#= primaryKeyShortTypeName #> <#= primaryKeyVariableName #>)
+<# } else { #>
+        public ActionResult Edit(<#= primaryKeyShortTypeName #> <#= primaryKeyVariableName #>)
+<# } #>
+        {
+<# if (UseAsync) { #>
+            <#= ModelTypeName #> model = await Db.<#= entitySetName #>.SingleOrDefaultAsync(o => o.<#= primaryKeyName #> == <#= primaryKeyVariableName #>);
+<# } else { #>
+            <#= ModelTypeName #> model = Db.<#= entitySetName #>.SingleOrDefault(o => o.<#= primaryKeyName #> == <#= primaryKeyVariableName #>);
+<# } #>
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(model);
+        }
+
+<# if (IsOverpostingProtectionRequired) {
+    foreach (var line in OverpostingWarningMessage.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)) { 
+#>
+        // <#= line #>
+<# } } #>
+        [HttpPost, ValidateAntiForgeryToken]
+<# if (UseAsync) { #>
+        public async Task<ActionResult> Edit(<#= primaryKeyShortTypeName #> <#= primaryKeyVariableName #>, <#= bindAttribute #><#= ModelTypeName #> model)
+<# } else { #>
+        public ActionResult Edit(<#= primaryKeyShortTypeName #> <#= primaryKeyVariableName #>, <#= bindAttribute #><#= ModelTypeName #> model)
+<# } #>
+        {
+<# if (UseAsync) { #>
+            <#= ModelTypeName #> <#= ModelVariable #> = await Db.<#= entitySetName #>.SingleOrDefaultAsync(o => o.<#= primaryKeyName #> == <#= primaryKeyVariableName #>);
+<# } else { #>
+            <#= ModelTypeName #> <#= ModelVariable #> = Db.<#= entitySetName #>.SingleOrDefault(o => o.<#= primaryKeyName #> == <#= primaryKeyVariableName #>);
+<# } #>
+<# foreach(var prop in ModelMetadata.Properties.Where(o => o.Scaffold && !o.IsReadOnly)) { #>
+            <#= ModelVariable #>.<#= prop.PropertyName #> = model.<#= prop.PropertyName #>;
+<# } #>
+
+            ModelState.Clear();
+            if (TryValidateModel(<#= ModelVariable #>))
+            {
+<# if (UseAsync) { #>
+                await Db.SaveChangesAsync();
+<# } else { #>
+                Db.SaveChanges();
+<# } #>
+                return RedirectToAction("Index")
+                    .WithSuccess("Saved changes to {0}.".FormatWith(<#= ModelVariable #>));
+            }
+
+            return View(model);
+        }
+
+
+<# if (UseAsync) { #>
+        public async Task<ActionResult> Delete(<#= primaryKeyShortTypeName #> <#= primaryKeyVariableName #>)
+<# } else { #>
+        public ActionResult Delete(<#= primaryKeyShortTypeName #> <#= primaryKeyVariableName #>)
+<# } #>
+        {
+<# if (UseAsync) { #>
+            <#= ModelTypeName #> model = await Db.<#= entitySetName #>.SingleOrDefaultAsync(o => o.<#= primaryKeyName #> == <#= primaryKeyVariableName #>);
+<# } else { #>
+            <#= ModelTypeName #> model = Db.<#= entitySetName #>.SingleOrDefault(o => o.<#= primaryKeyName #> == <#= primaryKeyVariableName #>);
+<# } #>
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+<# if (UseAsync) { #>
+        public async Task<ActionResult> Delete(<#= primaryKeyShortTypeName #> <#= primaryKeyVariableName #>, FormCollection form)
+<# } else { #>
+        public ActionResult Delete(<#= primaryKeyShortTypeName #> <#= primaryKeyVariableName #>, FormCollection form)
+<# } #>
+        {
+<# if (UseAsync) { #>
+            <#= ModelTypeName #> <#= ModelVariable #> = await Db.<#= entitySetName #>.SingleOrDefaultAsync(o => o.<#= primaryKeyName #> == <#= primaryKeyVariableName #>);
+<# } else { #>
+            <#= ModelTypeName #> <#= ModelVariable #> = Db.<#= entitySetName #>.SingleOrDefault(o => o.<#= primaryKeyName #> == <#= primaryKeyVariableName #>);
+<# } #>
+            Db.<#= entitySetName #>.Remove(<#= ModelVariable #>);
+<# if (UseAsync) { #>
+            await Db.SaveChangesAsync();
+<# } else { #>
+            Db.SaveChanges();
+<# } #>
+
+            return RedirectToAction("Index")
+                .WithSuccess("Deleted {0}.".FormatWith(<#= ModelVariable #>));
+        }
+    }
+}
+<#+
+// This function converts the primary key short type name to its nullable equivalent when possible. This is required to make
+// sure that an HTTP 400 error is thrown when the user tries to access the edit, delete, or details action with null values.
+    string GetNullableTypeName(string typeName, string shortTypeName)
+    {
+        // The exceptions are caught because if for any reason the type is user defined, then the short type name will be used.
+        // In that case the user will receive a server error if null is passed to the edit, delete, or details actions.
+        Type primaryKeyType = null;
+        try
+        {
+            primaryKeyType = Type.GetType(typeName);
+        }
+        catch
+        {
+        }
+        if (primaryKeyType != null && (primaryKeyType.IsPrimitive || IsGuid(typeName)))
+        {
+            return shortTypeName + "?";
+        }
+        return shortTypeName;
+    }
+
+    bool IsGuid(string typeName) {
+        return String.Equals("System.Guid", typeName, StringComparison.OrdinalIgnoreCase);
+    }
+#>
