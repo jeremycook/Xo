@@ -1,0 +1,21 @@
+﻿@model Xo.Areas.Blog.Domain.Post
+@{
+    Page.Title = "Delete " + Model + "?";
+}
+
+@Html.Partial("_SubNav", new SubNav { Brand = "Posts", Route = new { Model.Id } })
+
+<h1>@Page.Title</h1>
+
+<form action="" method="post">
+    @Html.AntiForgeryToken()
+    <p class="form-actions">
+        <button type="submit" class="btn btn-danger">Delete @Model</button>
+        <a href="@Url.Action("Details", new { Model.Id })" class="btn btn-default">Cancel</a>
+    </p>
+</form>
+
+<article class="well">
+    <h1>@Model</h1>
+    @Html.DisplayForModel()
+</article>

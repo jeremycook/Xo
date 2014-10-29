@@ -166,6 +166,12 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Blog\BlogRegistry.cs" />
+    <Compile Include="Areas\Blog\Controllers\PostsController.cs" />
+    <Compile Include="Areas\Blog\Domain\BlogDbContext.cs" />
+    <Compile Include="Areas\Blog\Domain\Post.cs" />
+    <Compile Include="Areas\Blog\Domain\PostStatus.cs" />
+    <Compile Include="Areas\Blog\Domain\Comment.cs" />
     <Compile Include="Areas\Identity\Controllers\AccountController.cs" />
     <Compile Include="Areas\Identity\Controllers\ManageController.cs" />
     <Compile Include="Areas\Identity\Domain\SystemAccount.cs" />
@@ -228,7 +234,13 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Blog\Views\Posts\EditorTemplates\AuthorId.cshtml" />
     <Content Include="Views\Shared\_SubNav.cshtml" />
+    <Content Include="Areas\Blog\Views\Posts\Create.cshtml" />
+    <Content Include="Areas\Blog\Views\Posts\Delete.cshtml" />
+    <Content Include="Areas\Blog\Views\Posts\Details.cshtml" />
+    <Content Include="Areas\Blog\Views\Posts\Edit.cshtml" />
+    <Content Include="Areas\Blog\Views\Posts\Index.cshtml" />
     <None Include="CodeTemplates\MvcArea\Area.cs.t4" />
     <None Include="CodeTemplates\MvcArea\web.cs.t4" />
     <None Include="CodeTemplates\MvcControllerEmpty\Controller.cs.t4" />
@@ -252,6 +264,9 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Areas\Blog\Views\web.config" />
+    <Content Include="Areas\Blog\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Blog\Views\Shared\_Layout.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

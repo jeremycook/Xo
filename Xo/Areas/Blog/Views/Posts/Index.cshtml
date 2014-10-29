@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Xo.Areas.Blog.Domain.Post>
+@{
+    Page.Title = "Posts";
+}
+
+@Html.Partial("_SubNav", new SubNav { Brand = "Posts" })
+
+<h1>Posts</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.Title)</th>
+            <th>@Html.DisplayNameFor(m => m.Body)</th>
+            <th>@Html.DisplayNameFor(m => m.PublicationDate)</th>
+            <th>@Html.DisplayNameFor(m => m.Status)</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("Details", new { item.Id })">@Html.DisplayFor(_ => item.Title)</a>
+                </td>
+                <td>@Html.DisplayFor(_ => item.Body)</td>
+                <td>@Html.DisplayFor(_ => item.PublicationDate)</td>
+                <td>@Html.DisplayFor(_ => item.Status)</td>
+                <td class="td-actions">
+                    <div class="btn-group btn-group-xs">
+                        <a href="@Url.Action("Details", new { item.Id })" class="btn btn-default">View</a>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="@Url.Action("Edit", new { item.Id })">Edit</a></li>
+                            <li><a href="@Url.Action("Delete", new { item.Id })">Delete</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        }
+    <tbody>
+</table>

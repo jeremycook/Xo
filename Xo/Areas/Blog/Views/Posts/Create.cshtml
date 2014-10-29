@@ -1,0 +1,23 @@
+﻿@model Xo.Areas.Blog.Domain.Post
+@{
+    Page.Title = "Create a Post";
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+@Html.Partial("_SubNav", new SubNav { Brand = "Posts" })
+
+<h1>@Page.Title</h1>
+
+<form action="" method="post" class="form-horizontal">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.EditorForModel()
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-primary">Create</button>
+            <a href="@Url.Action("Index")" class="btn btn-default">Cancel</a>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,11 @@
+﻿@model Xo.Areas.Blog.Domain.Post
+@{
+    Page.Title = Model;
+}
+
+@Html.Partial("_SubNav", new SubNav { Brand = "Posts", Route = new { Model.Id } })
+
+<h1>@Page.Title</h1>
+
+@Html.DisplayForModel()
+

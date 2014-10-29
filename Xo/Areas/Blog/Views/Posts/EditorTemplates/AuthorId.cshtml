@@ -1,0 +1,8 @@
+﻿@model Guid?
+@{
+    var db = StructureMap.ObjectFactory.GetInstance<Xo.Areas.Identity.Domain.IdentityDbContext>();
+    var items = db.Identities.ToList()
+        .Select(o => new SelectListItem { Value = o.Id.ToString(), Text = o.ToString(), Selected = o.Id == Model });
+
+    @Html.DropDownList("", items, "Choose...", new { @class = "author-id-editor form-control" })
+}
